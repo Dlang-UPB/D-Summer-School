@@ -9,28 +9,37 @@ jobs:
     runs-on: ubuntu-latest
     name: Build documentation
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Commit documentation changes
         run: |
+          echo ${{ github.ref_name }}
+          echo ${{ github.base_name }}
+          echo ${{ github.head_name }}
           git clone https://github.com/edi33416/DSS-gh-pages.git github-pages
-          if test ${{ github.ref}} == 'refs/heads/master'; then
+          if test ${{ github.event_name }} == 'push'; then
+          echo "In push event"
           cp -r docs/* github-pages/docs
           else
-          mkdir -p github-pages/${{ github.ref }}
-          cp -r docs/* github-pages/${{ github.ref }}
+          mkdir -p github-pages/${{ github.sha }}
+          cp -r docs/* github-pages/${{ github.sha }}
           fi
           cd github-pages/
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m 'Update "${{ github.ref }}"' -a || true
+          git commit -m 'Update "${{ github.sha }}"' -a || true
           git push https://${{ secrets.GH_PG_ACCESS_TOKEN }}@github.com/edi33416/DSS-gh-pages.git
 
       - name: Add comment to PR
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request_target'
         env:
-          URL: ${{ github.event.pull_request.comments_url }}
+          URL: ${{ github.event.pull_request_target.comments_url }}
           GITHUB_TOKEN: edi33416:${{ secrets.GH_PG_ACCESS_TOKEN }}
         run: |
           curl \
