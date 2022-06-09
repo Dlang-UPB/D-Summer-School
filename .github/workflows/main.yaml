@@ -2,7 +2,7 @@ name: Build-docs
 
 on:
   push:
-  pull_request:
+  pull_request_target:
 
 jobs:
   build_job:
@@ -11,10 +11,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      #- uses: actions/upload-artifact@v1
-        #with:
-          #name: docs
-          #path: build
       - name: Commit documentation changes
         run: |
           git clone https://github.com/edi33416/DSS-gh-pages.git github-pages
@@ -29,10 +25,8 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m 'Update "${{ github.ref }}"' -a || true
-          #git remote set-url origin https://x-access-token:${{ secrets.GH_PG_ACCESS_TOKEN }}@github.com/${{ github.repository }}
           git push https://${{ secrets.GH_PG_ACCESS_TOKEN }}@github.com/edi33416/DSS-gh-pages.git
-          # The above command will fail if no changes were present, so we ignore
-          # that.
+
       - name: Add comment to PR
         if: github.event_name == 'pull_request'
         env:
