@@ -1,0 +1,2 @@
+BINARY = uda
+include ../../Makefile
