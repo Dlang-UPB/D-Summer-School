@@ -67,8 +67,8 @@ Write unittests for the new `log` functions.
 
 Rememeber [UFCS](../lab-01/README.md#functions) from session 1.
 UFCS stands for Uniform Function Call Syntax and allows us to call function `foo` either as `foo(a)` or as `a.foo()`.
-This feature allows more expressive code.
-To feel the difference, compare:
+This feature makes coode far more expressive.
+To see the difference, compare:
 ```d
 to!string(value);
 ```
@@ -96,13 +96,55 @@ string log(<type> value, LogLevel level, string file = __FILE__)
     return makeHeader(level, file) ~ value.to!string;
 }
 ```
-So the body of all these functions is identical.
+Notice that the body of all these functions is identical.
 We can use templates to "merge" these functions into a single one that handles all numeric types.
 
-#### Template Specialisations
+### Template Specialisations
 
-For this, we need a **template specialisation**.
-TODO: demo
+We want all our `log` functions to use templates.
+The signature of the function should look like this:
+```d
+string log(Data)(Data data, LogLevel level, string file = __FILE__)
+```
+
+But how will the compiler tell the `log` function for strings from the one for `bool`s, for example?
+For this we need [template specialisations](https://dlang.org/spec/template.html#parameters_specialization).
+They are created by adding `: <type>` after declaring a template type, like so:
+```d
+string log(Data : string)(Data str, LogLevel level, string file = __FILE__)
+```
+
+The compiler will use this template only when the logged data is a `string` or is of a type that inherits from `string`.
+When multiple functions with the same name and different template specialisations are defined, the compiler chooses the most specialised template to instantiate.
+
+### Template Constraints
+
+While template specialisations work just fine for `bool` and `string` logs, they do not allow us to aggregate all numeric types into a signle function.
+
+[Quiz](./quizzes/template-specialisations.md)
+
+What we need to be able to log numeric types is a [template constraint](https://dlang.org/concepts.html).
+A template constraint is simply an `if` condition that comes before the function body.
+Unlike template specialisations which only allow us to specify that a template type must inherit from some other type, template constraints come with the flexibility of `if` statments.
+We can use complex expressions as constraints and we can combine them using `||` or `&&`.
+
+To understand template constraints better, let's look at the code in `demo/template-constraints/template_constraints.d`.
+Compile and run the code.
+First, let's look at the `sub` function.
+Its constraint (`if (is(T == int) || is(T == real) || is(T == double))`) checks whether the type of the arguments is `int`, `real` or `double`.
+The `unittest` that calls this function specifies that `sub("yes", "no")` should not compile.
+
+Now let's take a look at a more interesting example.
+`returnIfPrimeTemplate` checks if its template argument is a prime number.
+This means that `isPrime(num)` is evaluated at compile time.
+This procedure is called [Compile Time Function Evaluation (CTFE)](https://tour.dlang.org/tour/en/gems/compile-time-function-evaluation-ctfe).
+We will dive deeper into this topic [later in this session](#ctfe-and-string-mixins).
+Until then, CTFE means just what its name implies: the compiler evaluates the result of a function whose parameters **are known at compile time**.
+
+[Quiz](./quizzes/template-constraints.md)
+
+Now that you understand template constraints, find an appropriate [template trait](https://dlang.org/phobos/std_traits.html) and use it to create a log fuction for numeric data types.
+You can convert them to strings using `std.conv.to`, as shown in the [section on UFCS](#recap-ufcs).
 
 ## Log Arrays
 
@@ -181,7 +223,7 @@ Return whatever string you want from it.
 Do not modify the `log` method yet.
 Compile and run the code.
 
-[**Quiz**](./quizzes/toString-log.md)
+[Quiz](./quizzes/toString-log.md)
 
 Change your code in the corresponding `log` function so that the log remains unchanged.
 
