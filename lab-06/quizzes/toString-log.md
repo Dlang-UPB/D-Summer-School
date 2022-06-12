@@ -4,9 +4,9 @@ Why is the log output changed after adding the `toString` function?
 
 ## Question Answers
 
-+ because `__traits(allMembers)` also matches methods
-- because `toString` is always called due to being `const`
-- because `toString` is called when creating the `Boss` object
++ Because `__traits(allMembers)` also matches methods
+- Because `toString` is always called due to being `const`
+- Because `toString` is called when creating the `Boss` object
 
 ## Feedback
 

@@ -54,7 +54,7 @@ if (isArray!Data)
     return output.data.idup();
 }
 
-string log(Data)(Data structure, LogLevel level, string file = __FILE__)
+string log(Data)(Data obj, LogLevel level, string file = __FILE__)
 if (is(Data == struct) || is(Data == class))
 {
     import std.array : Appender;
@@ -65,9 +65,9 @@ if (is(Data == struct) || is(Data == class))
     output.put(makeHeader(level, file));
 
     static if (__traits(hasMember, Data, "toString") &&
-        __traits(compiles, { structure.toString(); }))
+        __traits(compiles, { obj.toString(); }))
     {
-        output.put(structure.toString());
+        output.put(obj.toString());
     }
     else
     {
@@ -77,7 +77,7 @@ if (is(Data == struct) || is(Data == class))
         static foreach (member; __traits(allMembers, Data))
             if (!isFunction!(mixin("Data." ~ member)))
             {
-                auto memberValue = mixin("structure." ~ member);
+                auto memberValue = mixin("obj." ~ member);
                 output.put(memberValue.to!string);
                 output.put(", ");
             }

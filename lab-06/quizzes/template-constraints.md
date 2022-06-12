@@ -4,10 +4,10 @@ When doesn't `returnIfPrimeParam(25)` compile?
 
 ## Question Answers
 
-- because 25 is not prime
-+ because the parameter value is not known at compile time
-- because `isPrime` is not a template function
-- because its template paremeter is not explicitly specified
+- Because 25 is not prime
++ Because the parameter value is not known at compile time
+- Because `isPrime` is not a template function
+- Because its template paremeter is not explicitly specified
 
 ## Feedback
 

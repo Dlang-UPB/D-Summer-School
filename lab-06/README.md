@@ -138,8 +138,8 @@ Now let's take a look at a more interesting example.
 `returnIfPrimeTemplate` checks if its template argument is a prime number.
 This means that `isPrime(num)` is evaluated at compile time.
 This procedure is called [Compile Time Function Evaluation (CTFE)](https://tour.dlang.org/tour/en/gems/compile-time-function-evaluation-ctfe).
-We will dive deeper into this topic [later in this session](#ctfe-and-string-mixins).
-Until then, CTFE means just what its name implies: the compiler evaluates the result of a function whose parameters **are known at compile time**.
+We will dive deeper into this topic [later in this session](#ctfe).
+Until then, CTFE means precisely what its name implies: the compiler evaluates the result of a function whose parameters **are known at compile time**.
 
 [Quiz](./quizzes/template-constraints.md)
 
@@ -184,22 +184,75 @@ unittest
     }
 
     Boss firstBoss = Boss("Iudex Gundyr", 1, Stats(3000, false));
-    assert("Boss(Iudex Gundyr, 1, Stats(3000, false)" == firstBoss.log());
+    assert("[warn] logger.d: Boss(Iudex Gundyr, 1, Stats(3000, false), )" == firstBoss.log(LogLevel.Warning));
 }
 ```
 Paste the unittest into your code and run it.
 It wil probabily fail to compile.
 
-To make it work, you need to iterate through all members of the `Boss` structure.
-
 ### `__traits`
 
-Use [`__traits(allMembers)`](https://dlang.org/spec/traits.html#allMembers) to obtain a list of all members of a structure or class.
-TODO: demo?
+To make the above `unittest` work, you first need to output the name of the structure.
+Then, you need to iterate through all members of the structure. and print their names.
 
-### CTFE and String Mixins
+When logging numeric types, you used the [template traits](https://dlang.org/phobos/std_traits.html).
+These traits are implemented in D's standard library.
 
-TODO: `static foreach`
+In our case, library traits don't help.
+There is no library template that can give us, for example, the name of a structure passed as template.
+For such cases, we need something called **compile time reflection**.
+It allows programs to obtain information that is available at compile time.
+In our case, this information is the type with which the `log` function is instantiated and the members of that structure.
+Compile time reflection uses the [`__traits`](https://dlang.org/spec/traits.html) keyword.
+
+Let's get more familiar with `__traits`.
+Take a look at the code in `demo/compile-time-reflection/compile_time_reflection.d`.
+Compile and run the code.
+
+The first `unittest` displays a very common usage of `__traits`: to check certain properties of a given variable or type.
+The second one showcases another usage: obtaining various type information.
+In this case, we use it to access a given member of a structure or class, without knowing the specific type of that object.
+This procedure is called [Duck Typing](https://en.wikipedia.org/wiki/Duck_typing).
+It's defined by the saying "if it quacks like a duck, it's a duck", meaning that the type of an object is unimportant as long as it contains the methdos and fields we require.
+We'll discuss this concept in more details [later in this ssession](#duck-typing).
+
+Now that you have a better grasp of `__traits`, head back to `logger/logger.d` and find the appropriate trait to obtain the name of the structure passed to the `log` function.
+Use one of the traits listed in the [documentation](https://dlang.org/spec/traits.html).
+
+Now use another trait to obtain the list of all members of the structure.
+Iterate this list using a `foreach` statement and append the name of each member of the structure to the output string.
+
+[Quiz](./quizzes/compile-time-reflection.md)
+
+### Recap: CTFE
+
+We can otpimise the `foreach` loop we've just written at compile time and have the compiler handle the iteration.
+We can do this using [Compile Time Function Evaluation](https://tour.dlang.org/tour/en/gems/compile-time-function-evaluation-ctfe).
+We talked about this in [session 2](../lab-02/README.md#ctfe).
+Go over this material for a recap.
+
+Concretely, we will change the `foreach` loop to a `static foreach` loop.
+This will make the compiler replace the loop with each separate step:
+```d
+// This code:
+static foreach (i; [1, 2, 3])
+{
+    writeln(i);
+}
+
+// is equivalent to:
+writeln(1);
+writeln(2);
+writeln(3);
+```
+
+If you run into an error saying that `declaration <some_variable> is already defined`, keep in mind that unlike `foreach`, `static foreach` does **not** create a new scope.
+Read the 4th point from [here](https://dlang.org/spec/version.html#staticforeach) to fix this error.
+
+At this point, with a pretty short code base, our logger is capable of logging neearly any type:
+- basic types
+- arrays
+- structures and classes
 
 Now imagine doing this in any other object-oriented language you know: C++, Java, Python etc.
 Yes, D is **that** cool.
@@ -217,7 +270,6 @@ string toString() const
 }
 ```
 
-
 Now add a `toString` method to the `Boss` struct.
 Return whatever string you want from it.
 Do not modify the `log` method yet.
@@ -226,15 +278,15 @@ Compile and run the code.
 [Quiz](./quizzes/toString-log.md)
 
 Change your code in the corresponding `log` function so that the log remains unchanged.
-
-**Hint:** this time, use a template trait: [`isFunction`](https://dlang.org/phobos/std_traits.html#isFunction).
+This time, use a template trait: [`isFunction`](https://dlang.org/phobos/std_traits.html#isFunction).
 
 Now make your `log` function call `toString` if it is defined.
 Keep the previous functionality unchanged.
-
-**Hint:** use a `static if` and `__traits` to check if `toString` is defined.
+Use a `static if` and `__traits` to check if `toString` is defined.
 
 ## Improvements
+
+### String Mixins
 
 ### What if `toString` is not a function?
 
