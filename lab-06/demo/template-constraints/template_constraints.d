@@ -33,11 +33,6 @@ if (isPrime(num))
     return "prime";
 }
 
-void main()
-{
-    
-}
-
 unittest
 {    
     assert(1 == sub(2, 1));
@@ -56,3 +51,5 @@ unittest
     assert(!__traits(compiles, returnIfPrimeParam(17)));
     assert(!__traits(compiles, returnIfPrimeParam(25)));
 }
+
+void main() { }

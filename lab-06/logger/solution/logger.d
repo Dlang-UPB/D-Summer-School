@@ -65,7 +65,7 @@ if (is(Data == struct) || is(Data == class))
     output.put(makeHeader(level, file));
 
     static if (__traits(hasMember, Data, "toString") &&
-        __traits(compiles, { obj.toString(); }))
+        isFunction!(obj.toString))
     {
         output.put(obj.toString());
     }
@@ -75,7 +75,7 @@ if (is(Data == struct) || is(Data == class))
         output.put(__traits(identifier, Data));
         output.put('(');
         static foreach (member; __traits(allMembers, Data))
-            if (!isFunction!(mixin("Data." ~ member)))
+            if (!isFunction!(mixin("obj." ~ member)))
             {
                 auto memberValue = mixin("obj." ~ member);
                 output.put(memberValue.to!string);

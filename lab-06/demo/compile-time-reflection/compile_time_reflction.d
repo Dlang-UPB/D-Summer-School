@@ -42,7 +42,4 @@ unittest
     assert("bar" == __traits(getMember, obj, "foo")());
 }
 
-void main()
-{
-
-}
+void main() { }

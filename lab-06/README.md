@@ -278,7 +278,7 @@ Compile and run the code.
 [Quiz](./quizzes/toString-log.md)
 
 Change your code in the corresponding `log` function so that the log remains unchanged.
-This time, use a template trait: [`isFunction`](https://dlang.org/phobos/std_traits.html#isFunction).
+You can use a template trait: [`isFunction`](https://dlang.org/phobos/std_traits.html#isFunction).
 
 Now make your `log` function call `toString` if it is defined.
 Keep the previous functionality unchanged.
@@ -286,11 +286,34 @@ Use a `static if` and `__traits` to check if `toString` is defined.
 
 ## Improvements
 
-### String Mixins
-
 ### What if `toString` is not a function?
 
 Previously, you made your logging function [use `toString`](#accommodate-tostring) when it's available.
-Make sure you verify that `toString` is actually a function.
+But what if `toString` is not a method?
+What if it's a simple member variable?
+Do you end up calling `obj.toString()` regardless?
+If so, make sure you verify that `toString` is actually a function.
 
-## Duck Typing
+### String Mixins
+
+Up to now, you've probably used `__traits(getMember, obj, member)` or some other `__traits` for obtaining `obj.member`.
+While this approach is definitely correct, it is not so expressive.
+We can use CTFE once more to make our code even more readable while maintaining the same functionality.
+
+In addition to CTFE, we need another D construct which is evaluated at compile time: [string mixins](https://dlang.org/articles/mixin.html).
+In essence, they allow us to write strings which are then compiled into D code.
+With string mixins, we can write code that writes itself.
+
+Look at the code in `demo/string-mixins/string_mixins.d`.
+As always, compile and run it.
+This time, the `unittest` fails.
+Understand the code and fix the `unittest`.
+
+[Quiz](./quizzes/string-mixins.md)
+
+For our use case with the logger, we need something simpler.
+Simply rewrite `__traits(getMember, obj, member)` using a string mixin.
+
+## Extra DBI
+
+### Duck Typing
