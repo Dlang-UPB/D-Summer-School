@@ -213,7 +213,7 @@ The first `unittest` displays a very common usage of `__traits`: to check certai
 The second one showcases another usage: obtaining various type information.
 In this case, we use it to access a given member of a structure or class, without knowing the specific type of that object.
 This procedure is called [Duck Typing](https://en.wikipedia.org/wiki/Duck_typing).
-It's defined by the saying "if it quacks like a duck, it's a duck", meaning that the type of an object is unimportant as long as it contains the methdos and fields we require.
+It's defined by the saying "if it walks like a duck, and quacks like a duck, then it's a duck", meaning that the type of an object is unimportant, as long as it contains the methdos and fields we require.
 We'll discuss this concept in more details [later in this ssession](#duck-typing).
 
 Now that you have a better grasp of `__traits`, head back to `logger/logger.d` and find the appropriate trait to obtain the name of the structure passed to the `log` function.
@@ -317,3 +317,13 @@ Simply rewrite `__traits(getMember, obj, member)` using a string mixin.
 ## Extra DBI
 
 ### Duck Typing
+
+In section [`__traits`](#traits), we introduced the concept of [Duck Typing](https://en.wikipedia.org/wiki/Duck_typing).
+This concept is commonly used in dynamically typed languages, such as Python.
+Despite being statically typed, D also supports this feature via templates.
+
+Being something extra, for this task we'll move away from our logger.
+Open the file `duck-typing/duck_typing.d` and compile the code.
+Fix the error and defeat the final boss.
+
+[Quiz](./quizzes/duck-typing.md)
