@@ -616,7 +616,7 @@ void main()
 - Runtime error at 1st call of fun()
 - Runtime error at 2nd call of fun()
 - hello world!
---42
+-42
 - -42
 Hello World!
 
