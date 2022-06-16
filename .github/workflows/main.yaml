@@ -2,25 +2,61 @@ name: Build-docs
 
 on:
   push:
+    branches:
+      - master
   pull_request:
 
 jobs:
   build_job:
     runs-on: ubuntu-latest
     name: Build documentation
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/docs/Gemfile
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      #- name: Build static site
+        #run: |
+          #cd docs
+
+          ## Set the right baseurl for Jekyll
+          #if test ${{ github.ref }} == 'refs/heads/master'; then
+            ##echo "baseurl: \"docs\"" >> _config.yml
+            ##echo "relative_url: \"/docs\"" >> _config.yml
+            #echo "url: \"https://edi33416.github.io/DSS-gh-pages\"" >> _config.yml
+          #else
+            ##echo "relative_url: \"/${{ github.ref }}\"" >> _config.yml
+            ##echo "baseurl: \"${{ github.ref }}\"" >> _config.yml
+            #echo "url: \"https://edi33416.github.io/DSS-gh-pages\"" >> _config.yml
+          #fi
+
+          #bundle exec jekyll build
+
       - name: Commit documentation changes
         run: |
           git clone https://github.com/edi33416/DSS-gh-pages.git github-pages
-          if test ${{ github.ref}} == 'refs/heads/master'; then
-          cp -r docs/* github-pages/docs
+          if test ${{ github.ref }} == 'refs/heads/master'; then
+            #cp -r docs/_site/* github-pages/docs
+            cp -r docs/* github-pages/docs
+            rm github-pages/docs/{_config.yml,Gemfile,Dockerfile}
           else
-          mkdir -p github-pages/${{ github.ref }}
-          cp -r docs/* github-pages/${{ github.ref }}
+            mkdir -p github-pages/${{ github.ref }}
+            #cp -r docs/_site/* github-pages/${{ github.ref }}
+            cp -r docs/* github-pages/${{ github.ref }}
+            echo "include: [\"${{ github.ref }}\"]" >> docs/_config.yml
+            #rm github-pages/${{ github.ref }}/{_config.yml,Gemfile,Dockerfile}
           fi
+          cp docs/_config.yml github-pages/
           cd github-pages/
+          #touch .nojekyll
+          #git rm .nojekyll
+          #git rm _config.yml
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
