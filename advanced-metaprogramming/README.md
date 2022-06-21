@@ -1,20 +1,13 @@
-# Design by Introspection
+# Advanced Metaprogramming
 
 > Inspired by [Bradley Chatha's](https://github.com/BradleyChatha) talk at [DConf 2021](https://www.youtube.com/watch?v=0lo-FOeWecA&list=PLIldXzSkPUXXA0Ephsge-DJEY8o7aZMsR&index=9).
 
-Over the years, a few programming paradigms have been successful enough to enter the casual vocabulary of software engineers: procedural, imperative, object-oriented, functional, generic, declarative.
-But there's a B-list, too, that includes paradigms such as logic, constraint-oriented, and symbolic.
-The point is, there aren't very many of them altogether.
+In [session 2](../lab-02/) we introduced the concept of metaprogramming and explained its cornerstones: CTFE and templates.
+While CTFE and templates are also found in other languages, such as C++, today we will dive deeper into metaprogramming and dicover more powerful features that are unique to D.
 
-**Design by Introspection (DBI)** is a proposed programming paradigm that is at the same time explosively productive and firmly removed from any of the paradigms considered canon.
-The tenets of Design by Introspection are:
-1. **The rule of optionality:** Component primitives are almost entirely opt-in.
-A given component is required to implement only a modicum of primitives, and all others are optional.
-The component is free to implement any subset of the optional primitives.
-1. **The rule of introspection:** A component user employs introspection on the component to implement its own functionality using the primitives offered by the component.
-1. **The rule of elastic composition:** A component obtained by composing several other components offers capabilities in proportion with the capabilities offered by its individual components.
-
-In short, Design by Introspection is like LEGO: it offers building blocks that you can combine to create powerful constructs.
+Metaprogramming means that a program is able to treat its own code as data.
+This means that our code will analyse its data types and change its behaviour accordingly.
+We will also write code that will then write itself.
 
 ## Logging
 
@@ -33,6 +26,12 @@ Typically, logs must contain relevant information about their source such as:
 To make our logger easier to `unittest`, we will skip the "volatile" attributes of logs, such as timestamp and line number.
 Concretely, our logger will display a given message, together with the log level and file name.
 Our goal today is to implement this logger by leveraging D's flexibility and strength in metaprogramming.
+
+## Recap: CTFE
+
+We first introduced [Compile Time Function Evaluation](https://tour.dlang.org/tour/en/gems/compile-time-function-evaluation-ctfe) in [session 2](../lab-02/README.md#ctfe).
+It means precisely what its name implies: the compiler evaluates the result of a function whose parameters **are known at compile time**.
+However, as we will see in this session, the compiler can also generate additional code, apart from executing it.
 
 ## Log Simple Types
 
@@ -67,7 +66,7 @@ Write unittests for the new `log` functions.
 
 Rememeber [UFCS](../lab-01/README.md#functions) from session 1.
 UFCS stands for Uniform Function Call Syntax and allows us to call function `foo` either as `foo(a)` or as `a.foo()`.
-This feature makes coode far more expressive.
+This feature makes code far more expressive.
 To see the difference, compare:
 ```d
 to!string(value);
@@ -224,12 +223,9 @@ Iterate this list using a `foreach` statement and append the name of each member
 
 [Quiz](./quizzes/compile-time-reflection.md)
 
-### Recap: CTFE
+### CTFE Returns
 
-We can otpimise the `foreach` loop we've just written at compile time and have the compiler handle the iteration.
-We can do this using [Compile Time Function Evaluation](https://tour.dlang.org/tour/en/gems/compile-time-function-evaluation-ctfe).
-We talked about this in [session 2](../lab-02/README.md#ctfe).
-Go over this material for a recap.
+We can optimise the `foreach` loop we've just written at compile time and have the compiler handle the iteration.
 
 Concretely, we will change the `foreach` loop to a `static foreach` loop.
 This will make the compiler replace the loop with each separate step:
@@ -314,7 +310,7 @@ Understand the code and fix the `unittest`.
 For our use case with the logger, we need something simpler.
 Simply rewrite `__traits(getMember, obj, member)` using a string mixin.
 
-## Extra DBI
+## Extra Metaprogramming
 
 ### Duck Typing
 

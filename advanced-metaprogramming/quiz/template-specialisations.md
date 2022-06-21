@@ -1,10 +1,10 @@
 ## Question Text
 
-Why cannot we use template specialisations to aggregate all numeric types?
+Why cannot we use a single template function with specialisations to aggregate all numeric types?
 
 ## Question Answers
 
 - Because floating point and integer types use different representations
 + Because these types do not inherit from a common type
-- Because there are too many numeric types and specialising for all of them does not scale well
+- Because the user could create their own numeric types that we couldn't account for
 - Because they use the C runtime, unlike `bool` and `string` which do not exist in C
