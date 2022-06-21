@@ -37,5 +37,3 @@ unittest
     fight(new IsshinTheSwordSaint());
     assert(skillExperience == 20_000);
 }
-
-void main() { }

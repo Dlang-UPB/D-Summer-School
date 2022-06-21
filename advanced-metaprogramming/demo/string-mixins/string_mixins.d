@@ -16,5 +16,3 @@ unittest
     assert(MediumStruct.sizeof == 0);
     assert(LargeStruct.sizeof == 0);
 }
-
-void main() { }

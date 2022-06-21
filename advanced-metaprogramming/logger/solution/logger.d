@@ -87,11 +87,6 @@ if (is(Data == struct) || is(Data == class))
     return output.data.idup();
 }
 
-void main()
-{
-
-}
-
 unittest
 {
     assert("[info] logger.d: Oceiros" == "Oceiros".log(LogLevel.Info));

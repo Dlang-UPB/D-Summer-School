@@ -1,5 +1,5 @@
 DMD = dmd
-DFLAGS = -unittest
+DFLAGS = -unittest -main
 
 all: $(BINARY)
 

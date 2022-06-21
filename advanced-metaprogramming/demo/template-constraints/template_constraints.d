@@ -51,5 +51,3 @@ unittest
     assert(!__traits(compiles, returnIfPrimeParam(17)));
     assert(!__traits(compiles, returnIfPrimeParam(25)));
 }
-
-void main() { }

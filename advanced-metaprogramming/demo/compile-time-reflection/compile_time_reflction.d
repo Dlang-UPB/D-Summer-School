@@ -41,5 +41,3 @@ unittest
     // Here `__traits(getMember)` returns a function that we can call.
     assert("bar" == __traits(getMember, obj, "foo")());
 }
-
-void main() { }

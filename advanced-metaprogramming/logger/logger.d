@@ -13,11 +13,6 @@ string log(string str, LogLevel level, string file)
     return str;
 }
 
-void main()
-{
-
-}
-
 unittest
 {
     // TODO: Add unittests for basic types: stirngs, ints, bools, floats
