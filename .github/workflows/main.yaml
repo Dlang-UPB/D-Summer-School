@@ -2,7 +2,7 @@ name: Build-docs
 
 on:
   push:
-  pull_request_target:
+  pull_request:
 
 jobs:
   build_job:
