@@ -1,4 +1,4 @@
-# C\C++ Interoperability and Tooling
+# C\C++ Interoperability
 
 ## Interfacing to C
 
@@ -13,7 +13,7 @@ The C function must be declared and given a calling convention, most likely the 
 extern (C) int strcmp(const char* string1, const char* string2);
 ```
 and then it can be called within D code in the obvious way:
-```
+```d
 import std.string;
 int myDfunction(char[] s)
 {
@@ -24,12 +24,12 @@ int myDfunction(char[] s)
 ### Calling D Functions from C
 
 For D functions to be able to be called from a C context, they should be annotated with the extern(C) attribute:
-```
+```d
 // test.d
 extern (C) int average(int a, int b) { return (a+b)/2; }  
 ```
 On the C side, the function signature must be provided:
-```
+```c
 // main.c
 int average(int a, int b);
 void main()
@@ -39,7 +39,7 @@ void main()
 }
 ```
 Compilation of the sources is done in the following manner:
-```
+```sh
 dmd -c test.d
 gcc -o main.o -c main.c
 gcc test.o main.o
@@ -49,7 +49,7 @@ Compiling the D and C code to object modules and then linking them into an execu
 ### Structs and Unions
 
 D structs and unions are analogous to C's. C code often adjusts the alignment and packing of struct members with a command line switch or with various implementation specific #pragmas. D supports explicit alignment attributes that correspond to the C compiler's rules. Check what alignment the C code is using, and explicitly set it for the D struct declaration. Example:
-```
+```d
 // test.d
 struct A                                                              
 {                                                     
@@ -62,7 +62,7 @@ extern(C) int fun(A a)
 }
 ```
 
-```
+```c
 // main.c
 #include <stdio.h>                                                                                           
 struct A
@@ -89,7 +89,7 @@ For popular C libraries, the first place to look for the corresponding D interfa
 ### Accessing C globals
 
 C globals can be accessed directly from D. C globals have the C naming convention, and so must be in an extern (C) block. Use the extern storage class to indicate that the global is allocated in the C code, not the D code. C globals default to being in global, not thread local, storage. To reference global storage from D, use the gshared storage class.
-```
+```d
 extern (C) __gshared int x;
 ```
 
@@ -100,7 +100,7 @@ Calling D functions from C++ and viceversa are achieved exactly the same as in t
 ### C++ namespaces
 
 C++ symbols that reside in namespaces can be accessed from D. A namespace can be added to the extern (C++) linkage attribute:
-```
+```d
 extern (C++, N) int foo(int i, int j, int k);
  
 void main()
@@ -120,7 +120,7 @@ Unlike classes and interfaces with D linkage, extern (C++) classes and interface
 ### Structs
 
 C++ allows a struct to inherit from a base struct. This is done in D using alias this.
-```
+```d
 struct Base { ... members ... };
 
 struct Derived
@@ -159,49 +159,6 @@ D features not available with BetterC:
 - Synchronized and core.sync
 - Static module constructors or destructors
 - Vector Extensions
-
-## Dub
-
-DUB is the D language's official package manager, providing simple and configurable cross-platform builds. DUB can also generate VisualD and Mono-D package files for easy IDE support.
-
-### Starting a new project
-From your top-level source directory, run:
-```
-$ dub init myproject
-```
-
-This begins an interactive session:
-```
-Package recipe format (sdl/json) [json]:
-Name [myproject]:
-Description [A minimal D application.]: My first project
-Author name [imadev]: My Name
-License [proprietary]: Boost
-Copyright string [Copyright © 2017, imadev]:
-Add dependency (leave empty to skip) []:
-Successfully created an empty project in '/home/imadev/src/myproject'.
-Package successfully created in myproject
-```
-
-The following configuration file is generated:
-```
-{
-	"name": "myproject",
-	"authors": [
-		"My Name"
-	],
-	"description": "My first project",
-	"copyright": "Copyright © 2017, imadev",
-	"license": "Boost"
-}
-```
-You can execute `dub build` to build your project, `dub run` to build and run it, or `dub test` to build and run unit tests. The last line below is the output of the default application.
-
-When you find a package to use from the DUB registry, add it to the dependency list in your DUB configuration file by running `dub add <packageName>`.
-
-### Advanced usage
-For more advanced feature, like single-file packages and managing local packages, please see [the advanced usage guide](https://dub.pm/advanced_usage.html).
-
 
 ## DPP
 

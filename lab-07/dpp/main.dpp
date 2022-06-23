@@ -1,0 +1,20 @@
+
+// TODO 1: Include stdio and stdlib
+
+
+void sort(int* arr, int n) {
+    // TODO 3: Complete the sort method
+}
+ 
+void main() {
+    int n;
+    int* arr;
+    scope(exit) free(arr);
+    scanf("%d".ptr, &n);
+ 
+    // TODO 2: Allocate memory for the array and populate it
+
+    sort(arr, n);
+    
+    // TODO 4: Print the sorted array using printf
+}
