@@ -1,0 +1,2 @@
+BINARY = myaa
+include ../../Makefile

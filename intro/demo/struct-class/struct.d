@@ -1,6 +1,6 @@
 import std.conv : to;
 
-class BigClass
+struct BigStruct
 {
     /* this sequence is used to generate at compile
        time the following code:
@@ -16,7 +16,7 @@ class BigClass
 
 int var;
 
-void get_a0(BigClass a)
+void get_a0(BigStruct a)
 {
     var = a.a0;
     a.a0 = 42;
@@ -24,7 +24,11 @@ void get_a0(BigClass a)
 
 void main()
 {
-    BigClass s = new BigClass();
-    for(int i = 0; i < 100000; i++)
+    import std.stdio : writeln;
+
+    BigStruct s;
+    for (int i = 0; i < 1_000_000; i++)
         get_a0(s);
+
+    writeln(s.a0);
 }

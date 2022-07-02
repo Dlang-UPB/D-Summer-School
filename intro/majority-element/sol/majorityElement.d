@@ -1,7 +1,21 @@
 string majorityElement(string[] a)
 in (a.length > 0)
 {
-    return "";
+    int[string] aa;
+    int max = 0;
+    string ans;
+
+    foreach(string s; a)
+    {
+        aa[s]++;
+        if (aa[s] > max)
+        {
+            max = aa[s];
+            ans = s;
+        }
+    }
+
+    return ans;
 }
 
 unittest

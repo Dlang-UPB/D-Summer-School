@@ -49,19 +49,18 @@ int main()
     
 As you can see, the only differences are:
 
-- the include directive was replaced by an import statement;
+- the `#include` directive was replaced by an `import` statement;
 - the array definition and initialization are slightly modified;
 
 Most C programs require minimal changes in order to be compiled with the D compiler.
 So do not worry, even if you don't have any previous experience in D, you will be able to understand most of the programs written in it because the syntax is extremely similar to the C one.
 
-The full D grammar can be found [here](https://dlang.org/spec/grammar.html).
-
 Now, using the above code snippet, let us delve into the D specific concepts.
 
 ## Imports
 
-In D, **imports** represent the counterpart of the C **include** directive, however the are 2 fundamental differences:
+In D, **imports** represent the counterpart of the C **include** directive
+However the are 2 fundamental differences:
 
 1. Imports may selectively specify which symbols are to be imported. For example, in the above code snippet, the full standard IO module of the standard library is imported, even though only the **printf** function is used.
 This results in a degradation in compile time since there is a larger symbol pool that needs to be examined when trying to resolve a symbol.
@@ -80,7 +79,7 @@ int main()
     for (c = position - 1; c < n - 1; c++)
         array[c] = array[c+1];
 
-    // if the lines calling printf are deleted,
+    // If the lines calling printf are deleted,
     // it is easier to spot the now useless import
     import std.stdio : printf;
     printf("Resultant array:\n");
@@ -91,9 +90,8 @@ int main()
 }
 ```
 
-### Exercise
+### C to D
 
-C to D
 Go to this [link](https://github.com/TheAlgorithms/C/tree/master/searching). You will find a series of searching algorithms, each implemented in C in its own file.
 - Choose one algorithm and port it to D with minimum modifications.
 - Update the code using D specific features to improve the code (fewer lines of code, increase in expressiveness etc.).
@@ -157,39 +155,6 @@ void main()
 }
 ```
 
-### Quiz
-
-What is the output of the following program?
-
-```d
-void setLength(int[] a, size_t length)
-{
-    a.length = length;
-}
-
-void startWith2(int[] a)
-{
-    a[0] = 2;
-    a[1] = 2;
-}
-
-void main()
-{
-    import std.stdio : writeln;
-    int[] a = new int[5];
-    
-    a.setLength(2);
-    a.startWith2();
-
-    writeln(a);
-}
-```
-    
-- [2, 2]
-- [2, 2, 0, 0, 0]
-- [0, 0, 0, 0, 0]
-- [0, 0]
-
 ### Array operations
 
 1. Array setting:
@@ -215,6 +180,12 @@ void main()
         
     **.length** is a builtin array property.
     For an extensive list of array properties click [here](https://dlang.org/spec/arrays.html#array-properties).
+
+    Now let's see how arrays work with functions.
+    The next quiz can be tricky but it will help us better understand how arrays work.
+    If it help, think what would happed in a similar situation in C.
+    
+    [Quiz](./quiz/ref-vs-value.md)
     
 2. Array Concatenation:
 
@@ -235,6 +206,12 @@ void main()
     Concatenation always creates a copy of its operands, even if one of the operands is a 0-length array.
     The operator `~=` does not always create a copy.
     For more information click [here](https://dlang.org/spec/arrays.html#resize).
+
+    Navigate to **demo/slice** directory.
+    Inspect and run the file **slice.d**.
+    What happened here? Why?
+
+    [Quiz](./quiz/slice.md)
     
 3. Vector operations:
 
@@ -276,33 +253,12 @@ void main()
 
     As you can see, the resulting code is much more expressive and fewer lines of code were utilized.
 
-### Quiz
-
-What is the output of the following program?
-
-```d
-void main()
-{
-    import std.stdio : writeln;
-
-    int[10] a;
-    auto b = a[0 .. $];
-    b = b ~ 5;
-
-    writeln(b.length);
-}
-```
-
-- compilation error
-- 11
-- 10
-
 ### Exercise
 
 Compute the median element of an unsorted integer array. For this, you will have to:
-    - Sort the array: implement any sorting algorithm you wish.
-    - Eliminate the duplicates: once the array is sorted, eliminating the duplicates is trivial.
-    - Check if the length of the array is **odd** or **even** and then return the median element.
+- Sort the array: implement any sorting algorithm you wish.
+- Eliminate the duplicates: once the array is sorted, eliminating the duplicates is trivial.
+- Check if the length of the array is **odd** or **even** and then return the median element.
 
 ## Associative Arrays (AA)
 
@@ -399,56 +355,14 @@ When a class is passed as an argument to an lvalue function parameter, the funct
 
 Both **structs** and **classes** will be covered more in depth in a further lab.
 
-### Quiz
+Navigate to the **demo/struct-class** directory.
+You will find 2 files implementing the same program.
+One uses a struct as a data container, while the other uses a class.
 
-What is the output of the following code?
+- Compile both files and measure the run time of each program. How do you explain the differences?
+- How do you explain the output differences? How we can change the code for structs so both versions produce the same output?
 
-```d
-struct S
-{
-    int x;
-}
-
-class C
-{
-    int y;
-}
-
-void changeStruct(S s)
-{
-    s.x = 2;
-}
-
-void changeStruct(C c)
-{
-    c.y = 2;
-}
-
-void main()
-{
-    S s;
-    C c = new C;
-
-    changeStruct(s);
-    changeStruct(c);
-
-    import std.stdio : writeln;
-    writeln(s.x);
-    writeln(c.y);
-}
-```
-    
-- 0, 0
-- 2, 0
-- 2, 2
-- 0, 2
-
-### Exercise
-
-Navigate to the struct-class directory. You will find 2 files implementing the same program. One uses a struct as a data container, while the other uses a class.
-
-1. Compile both files and measure the run time of each program. How do you explain the differences?
-2. In both situations, print the value of the field a0 after the loop ends. How do you explain the differences? How we can change the code for structs so both versions produce the same output?
+[Quiz](./quiz/struct-class.md)
 
 ## Functions
 
@@ -465,12 +379,10 @@ Functions are declared the same as in C. In addition, D offers some convenience 
     front(dropOne(group([1, 1, 2, 2, 2])));
     ```
 
-### Exercise
-
 D has a standard library called [phobos](https://dlang.org/phobos/).
 Find the **median element** using functions from the [std.algorithm](https://dlang.org/phobos/std_algorithm.html) package.
 Use UFCS for an increase in expressiveness.
-Observe the increase in performance brought by using functions from the standard library
+Observe the increase in performance achieved by using functions from the standard library
 
 2. Overloading:
 
@@ -513,12 +425,12 @@ Observe the increase in performance brought by using functions from the standard
     Auto functions have their return type inferred based on the type of the return statements.
     Auto can be also used to infer the type of a variable declaration.
     
-### Exercise
+Navigate to **demo/voldemort** directory. Inspect and run the code inside **voldermort.d**.
 
-Navigate to the **voldemort** directory. Inspect the source file **voldermort.d**.
-The declaration of struct **Result** is declared as **private** (nobody has access to it, except the members of the current file).
-Move the declaration of the struct **Result** inside the **fun** function.
-Compile the code. Does it compile? Why? Fix the issue.
+Now navigate to **intro/voldemort** directory. 
+**Result** is a struct declared inside **fun's** scope.
+However we want to be able to use it in **main** as well.
+Inspect the file. Does it compile? Why? Fix the issue.
     
 ## Unittests
 
@@ -552,6 +464,14 @@ struct Sum
     }
 }
 ```
+
+Navigate to the **demo/binary-search** directory.
+Inspect the source file binarySearch.d.
+As the name implies, a binarySearch algorithm is implemented on integers.
+Compile and run the file.
+
+- Write a unittest function that tests some corner cases. Are there any bugs in the algorithm implementation? If yes, fix them.
+- Rewrite the binarySearch algorithm to make use of slices.
    
 ## Contract Programming
 
@@ -597,6 +517,15 @@ do
 The two functions are almost identical semantically.
 The expressions in the first are lowered to contract blocks that look almost exactly like the second, except that a separate block is created for each expression in the first, thus avoiding shadowing variable names.
 
+[Quiz](./quiz/function-overloading.md)
+
+Navigate to the **distribute-sum** directory.
+Inspect the source file distribute.d and follow the instructions.
+
+- Complete the `distribute` function.
+- Write an `in` contract that ensures the value of the first argument(`sum`) is positive.
+- Write an `out` contract that ensures the value of `sum` is equal to `first` + `second`.
+
 ### Invariants
 
 Invariants are used to specify characteristics of a class or struct that must always be true (except while executing a member function).
@@ -629,55 +558,8 @@ For public or exported functions, the order of execution is:
 4. invariant
 5. postconditions
 
-### Quiz
-
-What is the output of the following code?
-
-```d
-import std.uni : toLower;
-
-int fun(string s)
-in (s == s.toLower())
-{
-    return -42;
-}
-
-string fun(int x)
-out (; x >= 0)
-{
-    x *= -42;
-    return "Hello World!";
-}
-
-void main()
-{
-    import std.stdio : writeln;
-
-    writeln(fun("hello world!"));
-    writeln(fun(-42));
-}
-```
-- Runtime error at 1st call of fun()
-- Runtime error at 2nd call of fun()
-- hello world!
--42
-- -42
-Hello World!
-
-### Exercise
-
-Navigate to the binary-search directory.
-Inspect the source file binarySearch.d.
-As the name implies, a binarySearch algorithm is implemented on integers.
-Compile and run the file.
-
-- Write a unittest function that tests some corner cases. Are there any bugs in the algorithm implementation? If yes, fix them.
-- The binarySearch function may be called with invalid data (for example: l = -1, r = -2). Write an in contract that halts the code execution in the case of invalid input (invalid values for l and r, the array is not sorted etc.)
-- Rewrite the binarySearch algorithm to make use of slices.
-
-### Exercise
-
-Navigate to array-median element. Follow the directions in the skeleton in order to implement our very own string : int associative array.
+Navigate to **my-associative-array** directory.
+Follow the directions in the skeleton in order to implement our very own string : int associative array.
 
 For the purpose of this exercise and lab, we suggest implementing the associative array using vectors.
 Feel free to go a little extra and make use of linked list, hash functions, or whatever design of a hash map you prefer.

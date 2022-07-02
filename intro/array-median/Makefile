@@ -1,5 +1,2 @@
-DC = dmd
-DFLAGS = -main -unittest -run
-
-all:
-	$(DC) $(DFLAGS) arrayMedian.d
+BINARY = arrayMedian
+include ../Makefile

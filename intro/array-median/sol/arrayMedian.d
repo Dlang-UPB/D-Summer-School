@@ -1,11 +1,37 @@
 int medianElem(int[] a)
 {
-    return 0;
+    for (int i = 0; i < a.length; i++)
+        for (int j = i + 1; j < a.length; j++)
+            if (a[i] > a[j]) {
+                int temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+
+    for (int i = 0; i < a.length - 1; i++)
+        if (a[i] == a[i + 1])
+            a = a[0 .. i] ~ a[i + 1 .. $];
+
+    if (a.length % 2 != 0)
+        return a[a.length / 2];
+
+    return (a[(a.length - 1) / 2] + a[a.length / 2]) / 2;
 }
 
 int medianElemPhobos(int[] a)
 {
-    return 0;
+    import std.algorithm : sort;
+
+    a.sort();
+
+    for (int i = 0; i < a.length - 1; i++)
+        if (a[i] == a[i + 1])
+            a = a[0 .. i] ~ a[i + 1 .. $];
+
+    if (a.length % 2 != 0)
+        return a[a.length / 2];
+
+    return (a[(a.length - 1) / 2] + a[a.length / 2]) / 2;
 }
 
 unittest

@@ -1,4 +1,4 @@
-Result fun(int a, string b)
+auto fun(int a, string b)
 {
     struct Result
     {
@@ -14,6 +14,6 @@ void main()
 {
     import std.stdio : writeln;
 
-    Result k = fun(1, "foo");
+    auto k = fun(1, "foo");
     writeln(k.a);
 }
