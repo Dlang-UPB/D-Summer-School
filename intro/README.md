@@ -253,8 +253,6 @@ void main()
 
     As you can see, the resulting code is much more expressive and fewer lines of code were utilized.
 
-### Exercise
-
 Compute the median element of an unsorted integer array. For this, you will have to:
 - Sort the array: implement any sorting algorithm you wish.
 - Eliminate the duplicates: once the array is sorted, eliminating the duplicates is trivial.
@@ -315,11 +313,9 @@ void main()
 
     For more advanced operations on AAs check this [link](https://dlang.org/spec/hash-map.html#construction_assignment_entries).
     For an exhaustive list of the AA properties check this [link](https://dlang.org/spec/hash-map.html#properties).
-    
-### Exercise
+
 
 Find the [majority element](https://leetcode.com/problems/majority-element/) in a string array using builtin associative arrays.
-
 You can start your implementation using the skeleton inside **majority-element** directory
 
 ## Structs
