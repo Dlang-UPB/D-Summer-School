@@ -206,8 +206,8 @@ void main()
 
 ## Practice
 
-Navigate to **demo/slice** directory.
-Inspect and run the file **slice.d**.
+Navigate to `demo/slice` directory.
+Inspect and run the file `slice.d`.
 What happened here? Why?
 
 [Quiz](./quiz/slice.md)
