@@ -1,41 +1,16 @@
 ## Question Text
 
-What is the output of the following program?
-
-```d
-void setLength(int[] a, size_t length)
-{
-    a.length = length;
-}
-
-void startWith2(int[] a)
-{
-    a[0] = 2;
-    a[1] = 2;
-}
-
-void main()
-{
-    import std.stdio : writeln;
-    int[] a = new int[5];
-    
-    a.setLength(2);
-    a.startWith2();
-
-    writeln(a);
-}
-```
+For the previous example, why we weren't able to modify the length of the array but we could modify the content?
 
 ## Question Answers
 
-- [2, 2]
-+ [2, 2, 0, 0, 0]
-- [0, 0, 0, 0, 0]
-- [0, 0]
+- a was declared as a static array, hence it's length can't be modified
+- When we tried to modify the length the array was passed by value, when we modified the actual data the array was passed by reference
+- The data was not modified, a new array was allocated and the reference was changed.
++ The length was not modified because the array was passed by value, but the data can be modified because we don't change the reference to it.
 
 ## Feedback
 
-Let's start with function `setLength`:
-The trick here is that int[] a could be seen as a struct that is passed by value, hence modifying it will only reflect inside the function body.
-If we wanted to modify the length of a we would have to add the `ref` keyword.
-The second function `startWith2` does not change the variable `a`, only the data that `a` points to(heap values), hence these values will be changed.
+a contains a length property - a number, and a pointer to data.
+For both functions a copy of a was created and, at the end of each function, the actual length and pointer were not modified.
+For the actual data, we are able to modify it as long as we have a reference to it.

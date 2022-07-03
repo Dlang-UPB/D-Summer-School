@@ -17,3 +17,4 @@ void main()
     Result k = fun(1, "foo");
     writeln(k.a);
 }
+

@@ -37,3 +37,4 @@ unittest {
     assert(first == 7);
     assert(second == 1_000_000);
 }
+

@@ -12,3 +12,4 @@ clean:
 	rm -f class.o struct.o class struct
 
 .PHONY: all clean
+

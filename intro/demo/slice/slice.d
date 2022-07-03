@@ -9,3 +9,4 @@ void main()
     writeln(b.length);
     writeln(a.length);
 }
+

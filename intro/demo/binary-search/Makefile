@@ -10,3 +10,4 @@ clean:
 	rm -f binarySearch.o binarySearch
 
 .PHONY: all clean
+

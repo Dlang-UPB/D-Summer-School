@@ -10,3 +10,4 @@ clean:
 	rm -f $(BINARY) $(BINARY).o
 
 .PHONY: all clean
+

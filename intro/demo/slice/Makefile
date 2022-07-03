@@ -7,3 +7,4 @@ clean:
 	rm -f slice.o slice
 
 .PHONY: all clean
+

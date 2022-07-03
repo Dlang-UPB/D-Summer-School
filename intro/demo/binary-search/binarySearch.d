@@ -24,3 +24,4 @@ void main()
     auto pos = arr.binarySearch(0, cast(int)arr.length, 2);
     writeln(pos);
 }
+

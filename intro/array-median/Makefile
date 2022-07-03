@@ -1,2 +1,3 @@
 BINARY = arrayMedian
 include ../Makefile
+

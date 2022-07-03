@@ -1,6 +1,5 @@
 # Introduction to D
 
-
 ## Syntax
 
 The D programming language uses a C-style syntax that ensures a smooth transition for programmers coming from a C\C++ background.
@@ -59,17 +58,17 @@ Now, using the above code snippet, let us delve into the D specific concepts.
 
 ## Imports
 
-In D, **imports** represent the counterpart of the C **include** directive
-However the are 2 fundamental differences:
+In D, `imports` represent the counterpart of the C `include` directive.
+However there are 2 fundamental differences:
 
-1. Imports may selectively specify which symbols are to be imported. For example, in the above code snippet, the full standard IO module of the standard library is imported, even though only the **printf** function is used.
+1. Imports may selectively specify which symbols are to be imported. For example, in the above code snippet, the full standard IO module of the standard library is imported, even though only the `printf` function is used.
 This results in a degradation in compile time since there is a larger symbol pool that needs to be examined when trying to resolve a symbol.
 In order to fix this, we can replace the blunt import with:
 ```d
 import std.stdio : printf;
 ```
 
-2. Imports may be used at any scope level.
+1. Imports may be used at any scope level.
 ```d
 int main()
 {
@@ -90,26 +89,26 @@ int main()
 }
 ```
 
-### C to D
-
-Go to this [link](https://github.com/TheAlgorithms/C/tree/master/searching). You will find a series of searching algorithms, each implemented in C in its own file.
-- Choose one algorithm and port it to D with minimum modifications.
-- Update the code using D specific features to improve the code (fewer lines of code, increase in expressiveness etc.).
-
-
 ## Data Types
 
 The D programming language defines 3 classes of data types:
 
-1. [Basic data types](https://dlang.org/spec/type.html#basic-data-types): such as int, float, long etc. that are similar to the ones provided by C;
-2. [Derived data types](https://dlang.org/spec/type.html#derived-data-types): pointer, array, associative array, delegate, function;
-3. [User defined types](https://dlang.org/spec/type.html#user-defined-types): class, struct, union, enum;
+1. [Basic data types](https://dlang.org/spec/type.html#basic-data-types): such as `int`, `float`, `long` etc. that are similar to the ones provided by C;
+1. [Derived data types](https://dlang.org/spec/type.html#derived-data-types): pointer, array, associative array, delegate, function;
+1. [User defined types](https://dlang.org/spec/type.html#user-defined-types): class, struct, union, enum;
 
 We will not insist on basic data types and pointers, as those are the same (or slightly modified versions) as the ones in C\C++.
 We will focus on arrays, associative arrays, classes, structs and unions.
 Delegates, functions and enums will be treated in a future lab.
 
-Note that in D all types have a default value. This means that there are no uninitialized variables.
+Note that in D all types have a default value.
+This means that there are no uninitialized variables.
+
+```d
+    int a; // equivalent to int a = 0;
+    int *p; // equivalent to int *p = null;
+    // The same goes for structs and classes: their fields are recursively initialised.
+```
 
 ## Arrays
 
@@ -135,7 +134,7 @@ Aggregating the pointer of the array with its size facilitates a safer implement
 
 D implements 2 types of arrays:
 1. [Static Arrays](https://dlang.org/spec/arrays.html#static-arrays): their length must be known at compile time and therefore cannot be modified; all examples up until this point have been using static arrays.
-2. [Dynamic Arrays](https://dlang.org/spec/arrays.html#dynamic-arrays): their length may change dynamically at run time.
+1. [Dynamic Arrays](https://dlang.org/spec/arrays.html#dynamic-arrays): their length may change dynamically at run time.
 
 ### Slicing
 
@@ -180,12 +179,6 @@ void main()
         
     **.length** is a builtin array property.
     For an extensive list of array properties click [here](https://dlang.org/spec/arrays.html#array-properties).
-
-    Now let's see how arrays work with functions.
-    The next quiz can be tricky but it will help us better understand how arrays work.
-    If it help, think what would happed in a similar situation in C.
-    
-    [Quiz](./quiz/ref-vs-value.md)
     
 2. Array Concatenation:
 
@@ -205,13 +198,19 @@ void main()
        
     Concatenation always creates a copy of its operands, even if one of the operands is a 0-length array.
     The operator `~=` does not always create a copy.
+    
+    When adjusting the length of a dynamic array there are 2 possibilities:
+    1. The resized array would overwrite data, so in this case a copy of the array is created.
+    1. The resized array does not interfere with other data, so it is resized in place.
     For more information click [here](https://dlang.org/spec/arrays.html#resize).
 
-    Navigate to **demo/slice** directory.
-    Inspect and run the file **slice.d**.
-    What happened here? Why?
+## Practice
 
-    [Quiz](./quiz/slice.md)
+Navigate to **demo/slice** directory.
+Inspect and run the file **slice.d**.
+What happened here? Why?
+
+[Quiz](./quiz/slice.md)
     
 3. Vector operations:
 
@@ -231,7 +230,7 @@ void main()
     A vector operation is indicated by the slice operator appearing as the left-hand side of an assignment or an op-assignment expression.
     The right-hand side can be an expression consisting either of an array slice of the same length and type as the left-hand side or a scalar expression of the element type of the left-hand side, in any combination.
 
-    Using the concepts of slicing and concatenation, we can modify the original example (that does the removal of an element from the array) so that the **for** loop is no longer necessary:
+    Using the concepts of slicing and concatenation, we can modify the original example (that does the removal of an element from the array) so that the `for` loop is no longer necessary:
     
     ```d
     int main()
@@ -249,14 +248,20 @@ void main()
     }
     ```
         
-    [writeln](https://dlang.org/library/std/stdio/writeln.html) is a function from the standard D library that does not require a format and is easily usable with a plethora of types.
+    [`writeln`](https://dlang.org/library/std/stdio/writeln.html) is a function from the standard D library that does not require a format and is easily usable with a plethora of types.
 
     As you can see, the resulting code is much more expressive and fewer lines of code were utilized.
 
-Compute the median element of an unsorted integer array. For this, you will have to:
+## Practice
+
+Navigate to `array-median` directory.
+Open and inspect the file `arrayMedian.d`.
+For this exercise, please add your solution inside the `medianElem` function.
+
+Compute the [median element](https://www.geeksforgeeks.org/median/) of an unsorted integer array. For this, you will have to:
 - Sort the array: implement any sorting algorithm you wish.
 - Eliminate the duplicates: once the array is sorted, eliminating the duplicates is trivial.
-- Check if the length of the array is **odd** or **even** and then return the median element.
+- Check if the length of the array is **odd** or **even** and then return the [median element](https://www.geeksforgeeks.org/median/).
 
 ## Associative Arrays (AA)
 
@@ -265,10 +270,12 @@ Associative arrays represent the D language hashtable implementation and have th
 ```d
 void main()
 {
-    int[string] aa;            // Associative array of ints that are
-                               // indexed by string keys.
-                               // The KeyType is string.
-    aa["hello"] = 3;           // set value associated with key "hello" to 3
+    // Associative array of ints that are indexed by string keys.
+    // The KeyType is string.
+    int[string] aa;
+    
+    // set value associated with key "hello" to 3
+    aa["hello"] = 3;
     int value = aa["hello"]; 
 }
 ```
@@ -287,9 +294,9 @@ void main()
     }
     ```
     
-    **remove(key)** does nothing if the given key does not exist and returns **false**.
-    If the given key does exist, it removes it from the AA and returns **true**.
-    All keys can be removed by using the method **clear**.
+    `remove(key)` does nothing if the given key does not exist and returns `false`.
+    If the given key does exist, it removes it from the AA and returns `true`.
+    All keys can be removed by using the method `clear`.
     
 2. Testing membership:
 
@@ -309,14 +316,22 @@ void main()
     }
     ```
     
-    The “in” expression yields a pointer to the value if the key is in the associative array, or null if not.
+    The "i" expression yields a pointer to the value if the key is in the associative array, or `null` if not.
 
     For more advanced operations on AAs check this [link](https://dlang.org/spec/hash-map.html#construction_assignment_entries).
     For an exhaustive list of the AA properties check this [link](https://dlang.org/spec/hash-map.html#properties).
 
+## Practice
 
 Find the [majority element](https://leetcode.com/problems/majority-element/) in a string array using builtin associative arrays.
-You can start your implementation using the skeleton inside **majority-element** directory
+You can start your implementation using the skeleton inside `majority-element` directory.
+
+### C to D
+
+Go to this [link](https://github.com/TheAlgorithms/C/tree/master/searching).
+You will find a series of searching algorithms, each implemented in C in its own file.
+- Choose one algorithm and port it to D with minimum modifications.
+- Update the code using D specific features to improve the code (fewer lines of code, increase in expressiveness etc.).
 
 ## Structs
 
@@ -340,10 +355,10 @@ struct Rectangle
 In D, classes are very similar with java classes:
 
 1. Classes can implement any number of interfaces
-2. Classes can inherit a single class
-3. Class objects are instantiated by reference only
-4. super has the same meaning as in Java
-5. overriding rules are very similar
+1. Classes can inherit a single class
+1. Class objects are instantiated by reference only
+1. super has the same meaning as in Java
+1. overriding rules are very similar
 
 The fundamental difference between **structs** and **classes** is that the former are **value** types, while the latter are **reference** types.
 This means that whenever a struct is passed as an argument to an lvalue function parameter, the function will operate on a copy of the object.
@@ -351,7 +366,9 @@ When a class is passed as an argument to an lvalue function parameter, the funct
 
 Both **structs** and **classes** will be covered more in depth in a further lab.
 
-Navigate to the **demo/struct-class** directory.
+## Practice
+
+Navigate to the `demo/struct-class` directory.
 You will find 2 files implementing the same program.
 One uses a struct as a data container, while the other uses a class.
 
@@ -360,11 +377,21 @@ One uses a struct as a data container, while the other uses a class.
 
 [Quiz](./quiz/struct-class.md)
 
+[Quiz](./quiz/struct-class-output.md)
+
+Navigate to the `demo/ref-vs-value` directory.
+Inspect the file and run the code.
+Now let's see how arrays behave as function parameters.
+The next quiz can be tricky but it will help us better understand how arrays work.
+Hint: an array is a struct that contains a `length` property and a pointer to the actual data.
+
+[Quiz](./quiz/ref-vs-value.md)
+
 ## Functions
 
 Functions are declared the same as in C. In addition, D offers some convenience features like:
 
-1. Uniform function call syntax (UFCS): allows that any call to a free function **fun(a)** can be written as member function call **a.fun()**
+1. Uniform function call syntax (UFCS): allows any call to a free function `fun(a)` to be written as a member function call: `a.fun()`
 
     ```d
     import std.algorithm : group;
@@ -375,18 +402,36 @@ Functions are declared the same as in C. In addition, D offers some convenience 
     front(dropOne(group([1, 1, 2, 2, 2])));
     ```
 
-D has a standard library called [phobos](https://dlang.org/phobos/).
-Find the **median element** using functions from the [std.algorithm](https://dlang.org/phobos/std_algorithm.html) package.
+## Practice
+
+Let's go back to the `array-median` directory.
+This time we want to find the [median element](https://www.geeksforgeeks.org/median/) using functions from the [std.algorithm](https://dlang.org/phobos/std_algorithm.html) package.
 Use UFCS for an increase in expressiveness.
 Observe the increase in performance achieved by using functions from the standard library
 
 2. Overloading:
 
     ```d
-    void fun(int a) {}
-    void fun(int a, int b) {}
+    import std.stdio : writefln;
+ 
+    void add(int a, int b)
+    {
+        writefln("sum = %d", a + b);
+    }
+    
+    void add(double a, double b)
+    {
+        writefln("sum = %f", a + b);
+    }
+    
+    void main()
+    {
+        add(10, 2);
+        add(5.3, 6.2);
+    }
     ```
     
+    Function overloading is a feature of object-oriented programming where two or more functions can have the same name but different parameters.
     Overloading is done based on the **type of parameters**, not on the **return type**.
     
 3. Default parameters:
@@ -420,13 +465,18 @@ Observe the increase in performance achieved by using functions from the standar
         
     Auto functions have their return type inferred based on the type of the return statements.
     Auto can be also used to infer the type of a variable declaration.
-    
-Navigate to **demo/voldemort** directory. Inspect and run the code inside **voldermort.d**.
 
-Now navigate to **intro/voldemort** directory. 
-**Result** is a struct declared inside **fun's** scope.
-However we want to be able to use it in **main** as well.
-Inspect the file. Does it compile? Why? Fix the issue.
+## Practice
+
+Navigate to `demo/voldemort` directory. Inspect and run the code inside `voldermort.d`.
+
+Now navigate to `intro/voldemort` directory. 
+`Result` is a struct declared inside `fun`'s scope.
+However we want to be able to use it in `main` as well.
+Inspect the file.
+Does it compile?
+Why?
+Fix the issue.
     
 ## Unittests
 
@@ -445,7 +495,7 @@ unittest
 Individual tests are specified in the unit test using [assert expressions](https://dlang.org/spec/expression.html#AssertExpression).
 There can be any number of unit test functions in a module, including within struct and class declarations.
 They are executed in lexical order.
-Unit tests, when enabled, are run after all static initialization is complete and before the **main()** function is called.
+Unit tests, when enabled, are run after all static initialization is complete and before the `main()` function is called.
 
 ```d
 struct Sum
@@ -461,7 +511,9 @@ struct Sum
 }
 ```
 
-Navigate to the **demo/binary-search** directory.
+## Practice
+
+Navigate to the `demo/binary-search` directory.
 Inspect the source file binarySearch.d.
 As the name implies, a binarySearch algorithm is implemented on integers.
 Compile and run the file.
@@ -471,7 +523,8 @@ Compile and run the file.
    
 ## Contract Programming
 
-Contracts are a breakthrough technique to reduce the programming effort for large projects. Contracts are the concept of preconditions, postconditions and errors.
+Contracts are a breakthrough technique to reduce the programming effort for large projects.
+Contracts are the concept of preconditions, postconditions and errors.
 
 ### Preconditions/Postconditions
 
@@ -515,7 +568,9 @@ The expressions in the first are lowered to contract blocks that look almost exa
 
 [Quiz](./quiz/function-overloading.md)
 
-Navigate to the **distribute-sum** directory.
+## Practice
+
+Navigate to the `distribute-sum` directory.
 Inspect the source file distribute.d and follow the instructions.
 
 - Complete the `distribute` function.
@@ -549,13 +604,15 @@ class Date
 
 For public or exported functions, the order of execution is:
 1. preconditions
-2. invariant
-3. function body
-4. invariant
-5. postconditions
+1. invariant
+1. function body
+1. invariant
+1. postconditions
 
-Navigate to **my-associative-array** directory.
-Follow the directions in the skeleton in order to implement our very own string : int associative array.
+## Practice
+
+Navigate to `my-associative-array` directory.
+Follow the directions in the skeleton in order to implement our very own `string : int` associative array.
 
 For the purpose of this exercise and lab, we suggest implementing the associative array using vectors.
 Feel free to go a little extra and make use of linked list, hash functions, or whatever design of a hash map you prefer.
