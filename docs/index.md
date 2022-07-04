@@ -24,7 +24,7 @@ Prizes will be awarded!
 
 ## Sessions
 
-1. [Introduction to D](./lab-01/)
+1. [Introduction to D](./intro/intro.md)
 1. [Introduction to Meta-Programming](./lab-02/)
 1. [Memory Safety](./lab-03/)
 1. [Advanced Classes and Structs](./lab-04/)
