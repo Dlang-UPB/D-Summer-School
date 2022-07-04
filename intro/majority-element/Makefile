@@ -1,0 +1,3 @@
+BINARY = majorityElement
+include ../Makefile
+
