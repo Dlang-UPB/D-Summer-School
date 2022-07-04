@@ -165,15 +165,14 @@ void main()
     int[3] c = [ 1, 2, 3, 4];  // error: mismatched sizes
     int[] b = [1, 2, 3, 4, 5];
     a = 3;                     // set all elements of a to 3
-    b = 5;                     // set all elements of b to 5
     a[] = 2;                   // same as `a = 3`; using an empty slice is the same as slicing the full array
     b = a[0 .. $];             // $ evaluates to the length of the array (in this case 10)
     b = a[];                   // semantically equivalent to the one above
-    b = a[0 .. a.length]       // semantically equivalent to the one above
+    b = a[0 .. a.length];      // semantically equivalent to the one above
     b[] = a[];                 // semantically equivalent to the one above
-    b[2 .. 4] = 4              // same as b[2] = 4, b[3] = 4
-    b[0 .. 4] = a[0 .. 4]      // error, a does not have 4 elements
-    a[0 .. 3] = b              // error, operands have different length
+    b[2 .. 4] = 4;             // same as b[2] = 4, b[3] = 4
+    b[0 .. 4] = a[0 .. 4];     // error, a does not have 4 elements
+    a[0 .. 3] = b;             // error, operands have different length
 }
 ```
 
@@ -220,7 +219,7 @@ void main()
     int[] c;
 
     b[] = a[] + 4;         // b = [5, 6, 7]
-    c[] = (a[] + 1) * b[]  // c = [10, 18, 28]
+    c[] = (a[] + 1) * b[];  // c = [10, 18, 28]
 }
 ```
 
@@ -312,7 +311,7 @@ void main()
 }
 ```
 
-The "i" expression yields a pointer to the value if the key is in the associative array, or `null` if not.
+The "in" expression yields a pointer to the value if the key is in the associative array, or `null` if not.
 
 For more advanced operations on AAs check this [link](https://dlang.org/spec/hash-map.html#construction_assignment_entries).
 For an exhaustive list of the AA properties check this [link](https://dlang.org/spec/hash-map.html#properties).
@@ -383,15 +382,20 @@ This one is more difficult, see if you can get this right: [Quiz 3](./quiz/ref-v
 
 Functions are declared the same as in C. In addition, D offers some convenience features like:
 
-### Uniform function call syntax (UFCS): allows any call to a free function `fun(a)` to be written as a member function call: `a.fun()`
+### Uniform function call syntax (UFCS)
+
+UFCS allows any call to a free function `fun(a)` to be written as a member function call: `a.fun()`
 
 ```d
 import std.algorithm : group;
 import std.range : chain, dropOne, front, retro;
+
+//retro(chain([1, 2], [3, 4]));
+//front(dropOne(group([1, 1, 2, 2, 2])));
+
 [1, 2].chain([3, 4]).retro; // 4, 3, 2, 1
 [1, 1, 2, 2, 2].group.dropOne.front; // (2, 3)
 
-front(dropOne(group([1, 1, 2, 2, 2])));
 ```
 
 **Practice:** Let's go back to the `practice/array-median` directory.
