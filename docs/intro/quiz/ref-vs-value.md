@@ -1,3 +1,6 @@
+---
+nav_exclude: true
+---
 ## Question Text
 
 For the previous example, why we weren't able to modify the length of the array but we could modify the content?

@@ -19,6 +19,7 @@ jobs:
           if test ${{ github.ref }} == 'refs/heads/master'; then
             cp -r docs/* github-pages/docs
             rm github-pages/docs/_config.yml
+            rm -rf github-pages/docs/_includes
             # Set the right baseurl for Jekyll
             #echo "baseurl: \"/docs\"" >> docs/_config.yml
             #echo "url: \"https://edi33416.github.io/DSS-gh-pages\"" >> docs/_config.yml
@@ -26,11 +27,13 @@ jobs:
             mkdir -p github-pages/${{ github.ref }}
             cp -r docs/* github-pages/${{ github.ref }}
             rm github-pages/${{ github.ref }}/_config.yml
+            rm -rf github-pages/${{ github.ref }}/_includes
             # Set the right baseurl for Jekyll
             #echo "baseurl: \"/${{ github.ref }}\"" >> docs/_config.yml
             #echo "url: \"https://edi33416.github.io/DSS-gh-pages\"" >> docs/_config.yml
           fi
           cp docs/_config.yml github-pages/
+          cp -r docs/_includes github-pages/
           cd github-pages/
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"

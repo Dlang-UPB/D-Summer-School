@@ -1,0 +1,60 @@
+<div class="mcq panel panel-primary">
+  <div class="panel-heading">
+    {% if include.header %} {{ include.header }} {% else %}Question{% endif %}
+  </div>
+  <div class="panel-body">
+    <div class="qtext">{{ include.text | markdownify}}</div>
+  </div>
+  <table class="choices table" style="border-bottom:1px solid #ddd">
+    <tbody>
+      {% for choice in include.choices %}
+      <tr class="choice">
+        <td class="choice-radio col-xs-1">
+          <input type="radio" name="radio-choices">
+        </td>
+        <td class="choice-text">{{ choice | markdownify}}</td>
+        <td class="choice-feedback"><span class="d-none text-muted">{{ include.feedback[forloop.index0] | markdownify }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="feedback text-center">
+    <span class="success-msg lead text-success d-none">You have successfully completed this question!</span>
+  </div>
+  <div class="text-center" style="padding: 5px;">
+    <button class="check btn btn-primary" onclick="(function (btn){
+                      console.log('Clicked check');
+                      answerIndex = {{include.answer}};
+                      choices = document.getElementsByClassName('choice');
+                      for (i = 0; i < choices.length; i++) {
+                        radio = choices[i].firstElementChild.firstElementChild;
+                        if (radio.checked) {
+                          if (i === answerIndex) {
+                            choices[i].classList.add('alert');
+                            choices[i].classList.add('alert-success');
+                          }
+                          else {
+                            choices[i].classList.add('alert');
+                            choices[i].classList.add('alert-danger');
+                            choices[i].lastElementChild.lastElementChild.classList.remove('d-none');
+                          }
+                        }
+                      }
+                   }(this))">
+      Check Answer
+    </button>
+    <button class="reset btn btn-default" onclick="(function (btn){
+                      console.log('Clicked reset');
+                      answerIndex = {{include.answer}};
+
+                      choices = document.getElementsByClassName('choice');
+                      for (i = 0; i < choices.length; i++) {
+                        radio = choices[i].firstElementChild.firstElementChild;
+                        choices[i].classList.remove('alert-success');
+                        choices[i].classList.remove('alert-danger');
+                        radio.checked = false;
+                        choices[i].lastElementChild.lastElementChild.classList.add('d-none');
+                      }
+                   }(this))">Try Again</button>
+  </div>
+</div>
