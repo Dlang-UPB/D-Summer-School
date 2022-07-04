@@ -25,6 +25,8 @@
     <button class="check btn btn-primary" onclick="(function (btn){
                       console.log('Clicked check');
                       answerIndex = {{include.answer}};
+                      document.getElementsByClassName('check')[0].classList.add('disabled');
+
                       choices = document.getElementsByClassName('choice');
                       for (i = 0; i < choices.length; i++) {
                         radio = choices[i].firstElementChild.firstElementChild;
@@ -36,8 +38,8 @@
                           else {
                             choices[i].classList.add('alert');
                             choices[i].classList.add('alert-danger');
-                            choices[i].lastElementChild.lastElementChild.classList.remove('d-none');
                           }
+                          choices[i].lastElementChild.lastElementChild.classList.remove('d-none');
                         }
                       }
                    }(this))">
@@ -46,6 +48,7 @@
     <button class="reset btn btn-default" onclick="(function (btn){
                       console.log('Clicked reset');
                       answerIndex = {{include.answer}};
+                      document.getElementsByClassName('check')[0].classList.remove('disabled');
 
                       choices = document.getElementsByClassName('choice');
                       for (i = 0; i < choices.length; i++) {
