@@ -1,3 +1,0 @@
-BINARY = distribute
-include ../Makefile
-

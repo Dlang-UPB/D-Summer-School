@@ -13,7 +13,7 @@ unittest
     import std.stdio : writeln;
 
     int[] a = [8, 6, 5, 4, 7, 2, 9, 2, 9];
-    
+
     assert(medianElem(a) == 6, "Custom median element failed...");
     writeln("Unittest for custom median element passed!");
 
