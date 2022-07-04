@@ -1,3 +1,6 @@
+---
+nav_exclude: true
+---
 ## Question Text
 
 In the previous example, why the class executable is significantly faster?

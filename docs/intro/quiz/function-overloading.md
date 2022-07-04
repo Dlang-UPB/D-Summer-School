@@ -1,3 +1,6 @@
+---
+nav_exclude: true
+---
 ## Question Text
 
 What is the output of the following code?

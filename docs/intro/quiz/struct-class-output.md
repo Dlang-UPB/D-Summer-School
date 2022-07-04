@@ -1,3 +1,6 @@
+---
+nav_exclude: true
+---
 ## Question Text
 
 What is the cause of the difference between the outputs in the previous struct-class example?
