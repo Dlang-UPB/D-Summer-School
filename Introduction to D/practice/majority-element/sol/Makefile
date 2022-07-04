@@ -1,3 +1,3 @@
 BINARY = majorityElement
-include ../Makefile
+include ../../../Makefile
 

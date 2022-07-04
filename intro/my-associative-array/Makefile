@@ -1,3 +1,0 @@
-BINARY = myaa
-include ../Makefile
-
