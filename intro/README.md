@@ -518,7 +518,9 @@ Inspect the source file binarySearch.d.
 As the name implies, a binarySearch algorithm is implemented on integers.
 Compile and run the file.
 
-- Write a unittest function that tests some corner cases. Are there any bugs in the algorithm implementation? If yes, fix them.
+- Write a unittest function that tests some corner cases.
+Are there any bugs in the algorithm implementation?
+If so, fix them.
 - Rewrite the binarySearch algorithm to make use of slices.
    
 ## Contract Programming
