@@ -1,5 +1,8 @@
-auto fun()
+auto fun(bool b)
 {
+    if (b)
+        return "asd";
+
     return 7;
 }
 

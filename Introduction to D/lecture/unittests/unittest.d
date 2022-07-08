@@ -15,6 +15,8 @@ struct Sum
 
 unittest
 {
+    asdsdf
+    int a "asd";
     writeln("in unittest 2");
 }
 

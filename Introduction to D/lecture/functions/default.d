@@ -1,4 +1,4 @@
-void fun(int a, int b=8) {}
+void fun(int a, int b=8, int c) {}
 
 void main()
 {
