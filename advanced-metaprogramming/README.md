@@ -94,7 +94,7 @@ Write unittests for the new `log` functions.
 
 ### Recap: UFCS
 
-Rememeber [UFCS](../lab-01/README.md#functions) from session 1.
+Remember [UFCS](../lab-01/README.md#functions) from session 1.
 UFCS stands for Uniform Function Call Syntax and allows us to call function `foo` either as `foo(a)` or as `a.foo()`.
 This feature makes code far more expressive.
 To see the difference, compare:
@@ -110,7 +110,43 @@ And yes, the parentheses are optional when calling a function without parameters
 
 Use UFCS when calling `std.conv.to` and the `log` functions you're implementing.
 
-### Template `log` Funcions
+### Template Funcions
+
+In [session 2](../lab-02/README.md#templates) we learned about templates.
+They allow us to write more flexible functions (and not only functions) that may receive arguments of different types without requiring us to specify those types.
+In order to fit this, the compiler generates a different instance of the template function for each different tuple of types with which it is called.
+This sounds complicated, but it's not.
+
+#### Demo
+
+Look at the code in `demo/template-functions/template_functions.d` and do not modify it yet.
+Use the script `get_foo_symbols.sh` simply `nm` to count the `foo` functions.
+
+[Quiz](./quiz/template-vs-regular-functions.md)
+
+There are many interesting things to note here:
+1. Templates allow us to merge multiple similar functions into the same implementation.
+1. Both `fooNonTemplate` and `fooTemplate` appear with different names in the executable file.
+This is called name mangling and its purpose is to differentiate between **function overloads** (functions with the same name and return types, but different parameters).
+If not for name mangling, we couldn't define 3 `fooNonTemplate` functions that take 3 arguments different, nor could we instantiate `fooTemplate` with different argument types.
+1. No matter how many times one calls a regular non-template function, the executable file will always contain **one** instance of that function.
+In contrast, the executable will contain as many **template instances** as there are different argument types with which that template is used.
+
+#### Practice
+
+Uncomment the lines specified in `demo/template-functions/template_functions.d` and recount the number of `foo*` symbols.
+Notice that now there are 3 more `foo*` functions.
+```
+_D18template_functions14fooNonTemplateFAyaZv
+_D18template_functions14fooNonTemplateFdZv
+_D18template_functions14fooNonTemplateFiZv
+_D18template_functions__T11fooTemplateTAyaZQsFNfQjZv
+_D18template_functions__T11fooTemplateTdZQqFNfdZv
+_D18template_functions__T11fooTemplateTiZQqFNfiZv
+```
+As you can see, their mangled names are different because they are created based on argument types.
+
+#### Logger
 
 Up to now, our logger contains lots of functions: one for each type of data that we've logged so far.
 On its own, this is not necessarily a bad thing.
@@ -126,39 +162,89 @@ string log(<type> value, LogLevel level, string file = __FILE__)
 }
 ```
 Notice that the body of all these functions is identical.
-We can use templates to "merge" these functions into a single one that handles all numeric types.
+As we discussed above, this is the ideal scenario in which to use templates.
+Do so and "merge" these functions into a single one that handles all numeric types.
 
 ### Template Specialisations
 
-We want all our `log` functions to use templates.
+[Template specialisations](https://dlang.org/spec/template.html#parameters_specialization) are a means to restrict the types with which one can instantiate a template.
+They are created by adding `: <type>` after declaring a template type, like so:
+```d
+void foo(T : SomeType)(T data)
+```
+
+The compiler will use this template only when its argument is of type `SomeType` or of a type that inherits from it.
+This is useful when you want to perform specific operations on the template types that require certain properties or methods.
+Without the specialisation, if we were to instantiate `foo` incorrectly, the compiler would emit an error from inside the function.
+This is confusing for library functions as the errors look unrelated to the code calling the function.
+Using the specialisation, the call to `foo` itself would issue the error, thus pointing clearly to the problem.
+
+#### Demo
+
+Compile the code in `demo/template-specialisations/template_specializations.d`.
+See that the error message says the problem comes from `innerFun` and then is propagated throughout the call stack:
+```
+dmd -unittest -main template_specialisations.d
+template_specialisations.d(8): Error: incompatible types for `(data) + (5)`: `string` and `int`
+template_specialisations.d(14): Error: template instance `template_specialisations.innerFun!string` error instantiating
+template_specialisations.d(20):        instantiated from here: `privateFun!string`
+template_specialisations.d(26):        instantiated from here: `publicFun!string`
+make: *** [../../Makefile:7: template_specialisations] Error 1
+```
+
+If only `publicFun` were a public fun while the others were private, this error message would create 2 problems:
+1. The message would leak implementation details to the developer.
+These details might contain private information that might end up compromising the app's security.
+1. It would be confusing to the user as they wouldn't know where the place of the error (`(data) + (5)`) is. 
+
+#### Practice
+
+Add a template specialisation in the above demo so that the error appears to be generated by the function `publicFun`.
+
+#### Logger
+
+Going back to our logger, we want all our `log` functions to use templates.
 The signature of the function should look like this:
 ```d
 string log(Data)(Data data, LogLevel level, string file = __FILE__)
 ```
 
-But how will the compiler tell the `log` function for strings from the one for `bool`s, for example?
-For this we need [template specialisations](https://dlang.org/spec/template.html#parameters_specialization).
-They are created by adding `: <type>` after declaring a template type, like so:
-```d
-string log(Data : string)(Data str, LogLevel level, string file = __FILE__)
-```
+In order for the compiler to tell the `log` function for strings from the one for `bool`s we need to use what we've just talked about: **template specialisations**.
+Modify the signature of your `log` functions to use the same template 
 
-The compiler will use this template only when the logged data is a `string` or is of a type that inherits from `string`.
-When multiple functions with the same name and different template specialisations are defined, the compiler chooses the most specialised template to instantiate.
+Remember that when multiple functions with the same name and different template specialisations are defined, the compiler chooses the most specialised template to instantiate.
+For example, in the snippet below, the compiler would instantiate `foo` with an argument of type `Derived`, not `Base`.
+```d
+struct Base {}
+
+struct Derived : Base {}
+
+void foo(T : Base)(T obj)
+{
+    writeln("Base");
+}
+
+void foo(T : Derived)(T obj)
+{
+    writeln("Derived");
+}
+
+unittest
+{
+    Derived d;
+    foo(d);
+}
+```
 
 ### Template Constraints
 
-While template specialisations work just fine for `bool` and `string` logs, they do not allow us to aggregate all numeric types into a signle function.
-
-[Quiz](./quizzes/template-specialisations.md)
-
-What we need to be able to log numeric types is a [template constraint](https://dlang.org/concepts.html).
 A template constraint is simply an `if` condition that comes before the function body.
 Unlike template specialisations which only allow us to specify that a template type must inherit from some other type, template constraints come with the flexibility of `if` statments.
 We can use complex expressions as constraints and we can combine them using `||` or `&&`.
 
+#### Demo
+
 To understand template constraints better, let's look at the code in `demo/template-constraints/template_constraints.d`.
-Compile and run the code.
 First, let's look at the `sub` function.
 Its constraint (`if (is(T == int) || is(T == real) || is(T == double))`) checks whether the type of the arguments is `int`, `real` or `double`.
 The `unittest` that calls this function specifies that `sub("yes", "no")` should not compile.
@@ -170,12 +256,22 @@ This procedure is called [Compile Time Function Evaluation (CTFE)](https://tour.
 We will dive deeper into this topic [later in this session](#ctfe).
 Until then, CTFE means precisely what its name implies: the compiler evaluates the result of a function whose parameters **are known at compile time**.
 
-[Quiz](./quizzes/template-constraints.md)
+[Quiz 1](./quizzes/template-constraints.md)
+
+#### Logger
+
+While template specialisations work just fine for `bool` and `string` logs, they do not allow us to aggregate all numeric types into a signle function.
+
+[Quiz 2](./quizzes/template-specialisations.md)
+
+What we need to be able to log numeric types is a [template constraint](https://dlang.org/concepts.html).
 
 Now that you understand template constraints, find an appropriate [template trait](https://dlang.org/phobos/std_traits.html) and use it to create a log fuction for numeric data types.
 You can convert them to strings using `std.conv.to`, as shown in the [section on UFCS](#recap-ufcs).
 
-## Log Arrays
+## Extended Practice
+
+### Log Arrays
 
 Now our logger elegantly handles basic data types.
 But what if we want to log an array?
@@ -189,9 +285,9 @@ To do this, we need to add the metadata to the returned string and then iterate 
 Implement another `log` function whose template constraint enforces the logged data to be an array.
 Use a [trait](https://dlang.org/phobos/std_traits.html).
 To create the logged string efficiently, use an [`Appender`](https://dlang.org/library/std/array/appender.html#2).
-As always, add a new `unittest` to verify the correctness of your newly implemneted `log` function.
+As always, add a new `unittest` to verify the correctness of your newly implemented `log` function.
 
-## Log Structures and Classes
+### Log Structures and Classes
 
 What if we want to log a structure?
 Or worse, a structure with nested structure members?
@@ -217,22 +313,21 @@ unittest
 }
 ```
 Paste the unittest into your code and run it.
-It wil probabily fail to compile.
+It wil probably fail to compile.
 
-### `__traits`
-
-To make the above `unittest` work, you first need to output the name of the structure.
-Then, you need to iterate through all members of the structure. and print their names.
+### Compile Time Reflection
 
 When logging numeric types, you used the [template traits](https://dlang.org/phobos/std_traits.html).
 These traits are implemented in D's standard library.
 
-In our case, library traits don't help.
-There is no library template that can give us, for example, the name of a structure passed as template.
+In other cases however, library traits don't help.
+There is no library template that can give us, for example, the name of a structure passed as a template or that gives us all the methods defined inside a class.
 For such cases, we need something called **compile time reflection**.
 It allows programs to obtain information that is available at compile time.
 In our case, this information is the type with which the `log` function is instantiated and the members of that structure.
 Compile time reflection uses the [`__traits`](https://dlang.org/spec/traits.html) keyword.
+
+#### Demo
 
 Let's get more familiar with `__traits`.
 Take a look at the code in `demo/compile-time-reflection/compile_time_reflection.d`.
@@ -243,17 +338,28 @@ The second one showcases another usage: obtaining various type information.
 In this case, we use it to access a given member of a structure or class, without knowing the specific type of that object.
 This procedure is called [Duck Typing](https://en.wikipedia.org/wiki/Duck_typing).
 It's defined by the saying "if it walks like a duck, and quacks like a duck, then it's a duck", meaning that the type of an object is unimportant, as long as it contains the methdos and fields we require.
-We'll discuss this concept in more details [later in this ssession](#duck-typing).
+We'll discuss this concept in more details [later in this session](#duck-typing).
 
-Now that you have a better grasp of `__traits`, head back to `logger/logger.d` and find the appropriate trait to obtain the name of the structure passed to the `log` function.
+#### Logger
+
+Now that you have a better grasp of `__traits`, head back to `logger/logger.d` and take another look at the `unittest` you added earlier.
+To make it work, you first need to output the name of the structure.
+Find the appropriate trait to obtain the name of the structure passed to the `log` function.
 Use one of the traits listed in the [documentation](https://dlang.org/spec/traits.html).
 
+
+Then, you need to iterate through all members of the structure. and print their names.
 Now use another trait to obtain the list of all members of the structure.
 Iterate this list using a `foreach` statement and append the name of each member of the structure to the output string.
 
 [Quiz](./quizzes/compile-time-reflection.md)
 
 ### CTFE Returns
+
+Remember that CTFE makes the compiler execute some code itself.
+We can specify that certain statements are to be evaluated by the compiler by adding the `static` keyword before other keywords such as `if`, `foreach` and `assert`.
+
+#### Logger
 
 We can optimise the `foreach` loop we've just written at compile time and have the compiler handle the iteration.
 
@@ -283,6 +389,8 @@ At this point, with a pretty short code base, our logger is capable of logging n
 Now imagine doing this in any other object-oriented language you know: C++, Java, Python etc.
 Yes, D is **that** cool.
 
+## Improvements
+
 ### Call `toString` when Defined
 
 What if a `struct` / `class` defines its own `toString` method?
@@ -309,8 +417,6 @@ You can use a template trait: [`isFunction`](https://dlang.org/phobos/std_traits
 Now make your `log` function call `toString` if it is defined.
 Keep the previous functionality unchanged.
 Use a `static if` and `__traits` to check if `toString` is defined.
-
-## Improvements
 
 ### What if `toString` is not a function?
 
