@@ -31,7 +31,7 @@ Prizes will be awarded!
 1. [Functional D](./lab-05/)
 1. [Design by Introspection](./lab-06/)
 1. [Memory Management](./lab-07/)
-1. [C/C++ Interoperability and Tooling](./lab-08/)
+1. [C/C++ Interoperability and Tooling](./c_cpp_interop/intro.md)
 
 ## Contributing
 
