@@ -12,6 +12,8 @@ enum LogLevel
     Error = "error"
 }
 
+enum NoLog;
+
 private string makeHeader(LogLevel level, string file)
 {
     return '[' ~ level ~ "] " ~ file ~ ": ";
@@ -59,6 +61,7 @@ if (is(Data == struct) || is(Data == class))
 {
     import std.array : Appender;
     import std.traits : isFunction;
+    import std.traits : hasUDA;
 
     Appender!(char[]) output;
 
@@ -75,12 +78,15 @@ if (is(Data == struct) || is(Data == class))
         output.put(__traits(identifier, Data));
         output.put('(');
         static foreach (member; __traits(allMembers, Data))
-            if (!isFunction!(mixin("obj." ~ member)))
+        {{
+            alias Member = __traits(getMember, Data, member);
+            if (!isFunction!(Member) && !hasUDA!(Member, NoLog))
             {
                 auto memberValue = mixin("obj." ~ member);
                 output.put(memberValue.to!string);
                 output.put(", ");
             }
+        }}
         output.put(')');
     }
 
@@ -148,4 +154,18 @@ unittest
     Boss firstBoss = Boss("Iudex Gundyr", 1, Stats(3000, false));
     assert("[warn] logger.d: Iudex Gundyr is the 1st boss in Dark Souls III, is not optional, yields 3000 souls" ==
         firstBoss.log(LogLevel.Warning));
+}
+
+unittest
+{
+    struct S
+    {
+        int loggable;
+        @NoLog int notLoggable;
+    }
+
+    S s = S(1, 2);
+
+    auto str = s.log(LogLevel.Info);
+    assert("[info] logger.d: S(1, )" == str, str);
 }
