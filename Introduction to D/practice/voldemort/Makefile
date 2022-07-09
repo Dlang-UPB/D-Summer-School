@@ -1,0 +1,2 @@
+BINARY = voldemort
+include ../../Makefile

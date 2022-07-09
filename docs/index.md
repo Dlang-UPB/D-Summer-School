@@ -1,3 +1,6 @@
+---
+nav_order: 1
+---
 # D Summer School
 
 ## Write fast. Read fast. Run fast.
@@ -21,14 +24,14 @@ Prizes will be awarded!
 
 ## Sessions
 
-1. **Introduction to D**
-1. **Introduction to Meta-Programming**
-1. **Function Attributes**
-1. **Advanced Classes and Structs**
-1. **Ranges**
-1. **Advanced Meta-Programming**
-1. **Memory Management**
-1. **C/C++ Interoperability**
+1. [Introduction to D](./intro/intro.md)
+1. [Introduction to Meta-Programming](./meta-intro/intro-to-meta.md)
+1. [Function Attributes](./d-attributes/fattr.md)
+1. [Advanced Classes and Structs](./lab-04/)
+1. [Functional D](./lab-05/)
+1. [Design by Introspection](./lab-06/)
+1. [Memory Management](./lab-07/)
+1. [C/C++ Interoperability and Tooling](./lab-08/)
 
 ## Contributing
 
