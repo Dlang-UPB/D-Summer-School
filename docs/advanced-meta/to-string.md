@@ -22,7 +22,7 @@ Return whatever string you want from it.
 Do not modify the `log` method yet.
 Compile and run the code.
 
-[Quiz](./quizzes/toString-log.md)
+[Quiz](./quiz/toString-log.md)
 
 Change your code in the corresponding `log` function so that the log remains unchanged.
 You can use a template trait: [`isFunction`](https://dlang.org/phobos/std_traits.html#isFunction).

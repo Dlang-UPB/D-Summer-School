@@ -19,7 +19,7 @@ As always, compile and run it.
 This time, the `unittest` fails.
 Understand the code and fix the `unittest`.
 
-[Quiz](./quizzes/string-mixins.md)
+[Quiz](./quiz/string-mixins.md)
 
 For our use case with the logger, we need something simpler.
 Simply rewrite `__traits(getMember, obj, member)` using a string mixin.

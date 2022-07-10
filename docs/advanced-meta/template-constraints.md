@@ -23,13 +23,13 @@ This procedure is called [Compile Time Function Evaluation (CTFE)](https://tour.
 We will dive deeper into this topic [later in this session](./ctfe.md).
 Until then, CTFE means precisely what its name implies: the compiler evaluates the result of a function whose parameters **are known at compile time**.
 
-[Quiz 1](./quizzes/template-constraints.md)
+[Quiz 1](./quiz/template-constraints.md)
 
 ## Logger
 
 While template specialisations work just fine for `bool` and `string` logs, they do not allow us to aggregate all numeric types into a signle function.
 
-[Quiz 2](./quizzes/template-specialisations.md)
+[Quiz 2](./quiz/template-specialisations.md)
 
 What we need to be able to log numeric types is a [template constraint](https://dlang.org/concepts.html).
 

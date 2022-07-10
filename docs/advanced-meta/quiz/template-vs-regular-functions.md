@@ -6,7 +6,7 @@ nav_exclude: true
 ## Function Templates vs Regular Functions Quiz
 
   {% assign q1_text = "Why are there 3 `fooNonTemplate` functions and no `fooTemplate` in the executable?" %}
-  {% assign q1_choices = "Because the `fooNonTemplate` is called 3 times, while `fooTemplate` is never called| Because the compiler instantiates all non-template functions, but only the used template functions| " | split: "| " %}
+  {% assign q1_choices = "Because the `fooNonTemplate` is called 3 times, while `fooTemplate` is never called| Because the compiler instantiates all non-template functions, but only the used template functions" | split: "| " %}
   {% assign q1_feedbacks = "The compiler only instantiates those templates that are actually used. It creates as many instances as there different argument types with a template function is called.| Correct!" | split: "| " %}
-  {% assign q1_correct = 2 %}
+  {% assign q1_correct = 1 %}
   {% include mc-quiz.html text=q1_text choices=q1_choices answer=q1_correct feedback=q1_feedbacks %}

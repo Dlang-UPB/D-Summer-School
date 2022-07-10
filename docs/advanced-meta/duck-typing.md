@@ -14,4 +14,4 @@ Despite being statically typed, D also supports this feature via templates.
 Open the file `duck-typing/duck_typing.d` and compile the code.
 Fix the error and defeat the final boss.
 
-[Quiz](./quizzes/duck-typing.md)
+[Quiz](./quiz/duck-typing.md)

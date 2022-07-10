@@ -40,4 +40,4 @@ Then, you need to iterate through all members of the structure. and print their 
 Now use another trait to obtain the list of all members of the structure.
 Iterate this list using a `foreach` statement and append the name of each member of the structure to the output string.
 
-[Quiz](./quizzes/compile-time-reflection.md)
+[Quiz](./quiz/compile-time-reflection.md)

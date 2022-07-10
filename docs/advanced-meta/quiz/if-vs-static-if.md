@@ -8,5 +8,5 @@ nav_exclude: true
   {% assign q1_text = "Why is the message `"20 is prime!... Wait, what?"` also printed?" %}
   {% assign q1_choices = "Because it is printed inside a regular `if` body, which the compiler doesn't evaluate| Because the code in a `unittest` block is alwats generated| Because the `isPrime` function contains a bug" | split: "| " %}
   {% assign q1_feedbacks = "Correct!| The compiler only evaluates and generates code according to `static if`s, not regular `if`s. The bodies of regular `if`s are always generated| The compiler only evaluates and generates code according to `static if`s, not regular `if`s. The bodies of regular `if`s are always generated| The compiler only evaluates and generates code according to `static if`s, not regular `if`s. The bodies of regular `if`s are always generated" | split: "| " %}
-  {% assign q1_correct = 1 %}
+  {% assign q1_correct = 0 %}
   {% include mc-quiz.html text=q1_text choices=q1_choices answer=q1_correct feedback=q1_feedbacks %}
