@@ -27,7 +27,7 @@ Prizes will be awarded!
 1. [Introduction to D](./intro/intro.md)
 1. [Introduction to Meta-Programming](./meta-intro/intro-to-meta.md)
 1. [Function Attributes](./d-attributes/fattr.md)
-1. [Advanced Classes and Structs](./lab-04/)
+1. [Advanced Structs and Classes](./structs-classes/asc.md)
 1. [Functional D](./lab-05/)
 1. [Design by Introspection](./lab-06/)
 1. [Memory Management](./lab-07/)
