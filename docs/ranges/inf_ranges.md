@@ -55,14 +55,13 @@ There is, essentially, an infinite number of packets that could be received on t
 In this situation, an infinite range could be used to implement the receiving of packets.
 When packets arrive, they are stored in a buffer and whenever *popFront* is called, a packet is returned to be processed.
 However, there are situations where we want to process only a finite number of elements from an infinite range.
-To achieve this we can use the (take)[https://dlang.org/phobos/std_range.html#take] function:
+To achieve this we can use the [take](https://dlang.org/phobos/std_range.html#take) function:
 
 ```d
 void main()
 {
     import std.stdio : writeln;
     import std.range : take;
-    // never ends
     foreach(n; FibonacciSeries().take(10))
         writeln(n);
 }
@@ -70,3 +69,7 @@ void main()
 
 Although the range is infinite, by using *take*, we specify that we want to process only the first 10 elements.
 *take* returns a range that is a wrapper implementation over the range that it receives.
+
+## Practice
+
+Update our `LinkedList` implementation by making it an infinite range. If the range needs to consume more elements than it has - for example, the list was initialized with `initListOfTen` but 15 elements are taken fron it - then `T.init` should be generated and returned on the fly for the missing elements.
