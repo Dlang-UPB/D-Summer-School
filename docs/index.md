@@ -29,7 +29,7 @@ Prizes will be awarded!
 1. [Function Attributes](./d-attributes/fattr.md)
 1. [Advanced Structs and Classes](./structs-classes/asc.md)
 1. [Functional D](./lab-05/)
-1. [Design by Introspection](./lab-06/)
+1. [Advanced Meta-Programming](./advanced-meta/advanced-meta.md)
 1. [Memory Management](./lab-07/)
 1. [C/C++ Interoperability and Tooling](./lab-08/)
 

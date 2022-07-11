@@ -1,0 +1,2 @@
+BINARY = logger
+include ../../Makefile

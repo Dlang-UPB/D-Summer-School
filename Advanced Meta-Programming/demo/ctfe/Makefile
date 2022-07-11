@@ -1,0 +1,2 @@
+BINARY = ctfe
+include ../../Makefile
