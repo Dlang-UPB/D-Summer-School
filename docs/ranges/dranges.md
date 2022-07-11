@@ -15,7 +15,7 @@ struct Range(T)
     void popFront();
 }
 ```
-*Note: Both **classes and **structs** may be used to define ranges*
+*Note: Both **classes** and **structs** may be used to define ranges*
 
 Any object that presents the above interface is considered an *InputRange*.
 *InputRange*s may be used with *foreach* statements, therefore it is not necessary to have any information about internal methods.
@@ -126,3 +126,12 @@ The elements of the series are computed **lazily** when needed.
 Notice that the constructor only sets the number of Fibonnaci elements that need to be computed.
 The elements are computed upon request by calling *popFront*.
 This may be essential for execution speed and memory consumption.
+
+
+## Practice
+
+Navigate to the `Ranges/practice/linkedList` directory. Inspect the `linkedList.d` file. What does the code do?
+
+- Implement the "initListOfTen" function that has the signature: "void initList(ref LinkedList start)". This function initializes a list of 10 elements where `node(i)` contains `i`. Write a unittest to make sure the function works properly.
+- Answer this [quiz](./quiz/mem.md)
+- Implement the required methods such that `LinkedList` is an `InputRange`. To test the functionality, write a unittest that contains a foreach loop that iterates over a `LinkedList`.

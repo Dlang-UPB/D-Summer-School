@@ -1,7 +1,7 @@
 ---
 title: Forward Range
 parent: Ranges
-nav_oderd: 4
+nav_order: 4
 ---
 # Forward Range
 

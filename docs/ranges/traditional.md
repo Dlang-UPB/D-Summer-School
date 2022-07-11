@@ -12,10 +12,10 @@ For example, the following function that prints the elements of a linked list mu
 struct Node
 {
     int element;
-    Node * next;
+    Node* next;
 }
 
-void print(const(Node) * list)
+void print(const(Node)* list)
 {
     for ( ; list; list = list.next)
     {
@@ -43,3 +43,5 @@ As a result, N algorithms that support M data structures must be written NxM tim
 
 Conversely, because ranges abstract algorithms away from data structures, implementing just N algorithms and M data structures would be sufficient.
 A newly implemented data structure can work with all of the existing algorithms that support the type of range that the new data structure provides, and a newly implemented algorithm can work with all of the existing data structures that support the range type that the new algorithm requires.
+
+Test your knowledge by answering this [quiz](./quiz/trad.md)
