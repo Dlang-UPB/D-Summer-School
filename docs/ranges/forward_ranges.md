@@ -31,7 +31,7 @@ struct FibonacciSeries
 The returned copy is a separate range that would continue from the point where it was copied from.
 
 We can demonstrate that the copied object is independent from the actual range with the following program.
-The algorithm (std.range.popFrontN())[https://dlang.org/phobos/std_range_primitives.html#.popFrontN] in the following code removes a specified number of elements from the specified range:
+The algorithm [std.range.popFrontN()](https://dlang.org/phobos/std_range_primitives.html#.popFrontN) in the following code removes a specified number of elements from the specified range:
 
 ```d
 import std.range;
@@ -60,8 +60,6 @@ void main() {
 }
 ```
 
-TODO: quiz - why doesn't *range.take(5)* does not modify the range?
-
 The output of the program shows that removing elements from the range does not affect its saved copy:
 
 ```
@@ -71,6 +69,8 @@ The output of the program shows that removing elements from the range does not a
       After removing three more elements: [5, 8, 13, 21, 34]
                                 The copy: [1, 2, 3, 5, 8]
 ```
+
+Make sure you have understood the previous example by answering this [quiz](./quiz/ffrange.md)
 
 An algorithm that works with *ForwardRange* is *std.range.cycle*.
 *cycle()* iterates over the elements of a range repeatedly from the beginning to the end.
@@ -92,3 +92,7 @@ The output consists of the first twenty elements of cycling through the first fi
 
 Notice the importance of laziness in this example: the first four lines above merely construct range objects that will eventually produce the elements.
 The numbers that are part of the result are calculated by *FibonacciSeries.popFront()* as needed.
+
+## Practice
+
+Upgrade our `LinkedList` to a `ForwardRange`. Note that we are using heap allocated memory, therefore simply returning the `this` reference will not cut it.

@@ -392,3 +392,7 @@ The output:
 ```d
 [16, 9, 4, 1, 0, 888, 777, 34, 21, 13, 8, 5, 3, 2, 1, 1, 0]
 ```
+
+## Practice
+
+Upgrade our `LinkedList` to a `RandomAccessRange` based on a finite bidirectional range. Test this new functionality by adding a unittest that makes use of the indexing operator.
