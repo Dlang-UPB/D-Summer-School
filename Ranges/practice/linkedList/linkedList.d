@@ -1,7 +1,7 @@
 struct LinkedListNode(T)
 {
     T elem;
-    T* next;
+    LinkedListNode!(T)* next;
 
     // allocate a new node
     static LinkedListNode* create(T elem)

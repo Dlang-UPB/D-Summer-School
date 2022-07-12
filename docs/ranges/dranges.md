@@ -132,6 +132,6 @@ This may be essential for execution speed and memory consumption.
 
 Navigate to the `Ranges/practice/linkedList` directory. Inspect the `linkedList.d` file. What does the code do?
 
-- Implement the "initListOfTen" function that has the signature: "void initList(ref LinkedList start)". This function initializes a list of 10 elements where `node(i)` contains `i`. Write a unittest to make sure the function works properly.
+- Implement the "initListOfTen" function that has the signature: "void initList(T)(ref LinkedList!T start)". This function initializes a list of 10 elements where `node(i)` contains `i`. Write a unittest to make sure the function works properly.
 - Answer this [quiz](./quiz/mem.md)
 - Implement the required methods such that `LinkedList` is an `InputRange`. To test the functionality, write a unittest that contains a foreach loop that iterates over a `LinkedList`.
