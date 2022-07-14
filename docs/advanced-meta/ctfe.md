@@ -30,7 +30,7 @@ writeln(3);
 If you run into an error saying that `declaration <some_variable> is already defined`, keep in mind that unlike `foreach`, `static foreach` does **not** create a new scope.
 Read the 4th point from [here](https://dlang.org/spec/version.html#staticforeach) to fix this error.
 
-At this point, with a pretty short code base, our logger is capable of logging neearly any type:
+At this point, with a pretty short code base, our logger is capable of logging nearly any type:
 - basic types
 - arrays
 - structures and classes
