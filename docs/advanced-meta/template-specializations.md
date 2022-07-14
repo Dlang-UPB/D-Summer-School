@@ -1,17 +1,17 @@
 ---
-title: Template Specialisations
+title: Template Specializations
 parent: Advanced Meta-Programming
 nav_order: 5
 ---
-# Template Specialisations
+# Template specializations
 
-[Template specialisations](https://dlang.org/spec/template.html#parameters_specialization) are a means to restrict the types with which one can instantiate a template.
+[Template specializations](https://dlang.org/spec/template.html#parameters_specialization) are a means to restrict the types with which one can instantiate a template.
 They are created by adding `: <type>` after declaring a template type, like so:
 ```d
 void foo(T : SomeType)(T data)
 ```
 
-The compiler will use this template only when its argument is of type `SomeType` or of a type that inherits from it.
+The compiler will use this template only when its argument is of type `SomeType` or of a type that is is implicitly convertible to it.
 This is useful when you want to perform specific operations on the template types that require certain properties or methods.
 Without the specialisation, if we were to instantiate `foo` incorrectly, the compiler would emit an error from inside the function.
 This is confusing for library functions as the errors look unrelated to the code calling the function.
@@ -19,15 +19,15 @@ Using the specialisation, the call to `foo` itself would issue the error, thus p
 
 ## Demo
 
-Compile the code in `demo/template-specialisations/template_specializations.d`.
+Compile the code in `demo/template-specializations/template_specializations.d`.
 See that the error message says the problem comes from `innerFun` and then is propagated throughout the call stack:
 ```
-dmd -unittest -main template_specialisations.d
-template_specialisations.d(8): Error: incompatible types for `(data) + (5)`: `string` and `int`
-template_specialisations.d(14): Error: template instance `template_specialisations.innerFun!string` error instantiating
-template_specialisations.d(20):        instantiated from here: `privateFun!string`
-template_specialisations.d(26):        instantiated from here: `publicFun!string`
-make: *** [../../Makefile:7: template_specialisations] Error 1
+dmd -unittest -main template_specializations.d
+template_specializations.d(8): Error: incompatible types for `(data) + (5)`: `string` and `int`
+template_specializations.d(14): Error: template instance `template_specializations.innerFun!string` error instantiating
+template_specializations.d(20):        instantiated from here: `privateFun!string`
+template_specializations.d(26):        instantiated from here: `publicFun!string`
+make: *** [../../Makefile:7: template_specializations] Error 1
 ```
 
 If only `publicFun` were a public fun while the others were private, this error message would create 2 problems:
@@ -47,10 +47,10 @@ The signature of the function should look like this:
 string log(Data)(Data data, LogLevel level, string file = __FILE__)
 ```
 
-In order for the compiler to tell the `log` function for strings from the one for `bool`s we need to use what we've just talked about: **template specialisations**.
+In order for the compiler to tell the `log` function for strings from the one for `bool`s we need to use what we've just talked about: **template specializations**.
 Modify the signature of your `log` functions to use the same template 
 
-Remember that when multiple functions with the same name and different template specialisations are defined, the compiler chooses the most specialised template to instantiate.
+Remember that when multiple functions with the same name and different template specializations are defined, the compiler chooses the most specialised template to instantiate.
 For example, in the snippet below, the compiler would instantiate `foo` with an argument of type `Derived`, not `Base`.
 ```d
 struct Base {}
