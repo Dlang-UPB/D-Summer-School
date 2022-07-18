@@ -22,7 +22,7 @@ void main() {
 ```
 
 Appending elements to a dynamic array in this manner will trigger allocations when the capacity of the array is insufficient.
-You can see this by compiling the above code with the option ```-vgc```.
+You can see this by compiling the above code with the option `-vgc`.
 Even better, we can use the [capacity](https://dlang.org/phobos/object.html#.capacity) property of the array to inspect the capacity at any time.
 This is different from length:
 - length is the number of elements currently stored in the array; this property can be read, but for dynamic arrays it can also be set (setting it might trigger an allocation)
@@ -52,14 +52,15 @@ void main() {
 }
 ```
 
-Now we can see exactly when the allocations take place. The output of the above snippet may look like this:
+Now we can see exactly when the allocations take place.
+The output of the above snippet may look like this:
 
 ```
 0 -> 3 -> 7 -> 11 -> 15 -> 23 -> 31 -> 43 -> 63 -> 91 -> 127
 Number of allocations: 10
 ```
 
-From line ```(1)``` we can see that when the dynamic array is uninitialized, it begins with capacity 0, meaning it will trigger an allocation the first time we try to append to it, at line ```(2)```.
+From line `(1)` we can see that when the dynamic array is uninitialized, it begins with capacity 0, meaning it will trigger an allocation the first time we try to append to it, at line `(2)`.
 Even if we appended only a single element, the capacity went from 0 to 3.
 This makes sense, because it is acceptable to allocate slightly more space than we need, instead of requesting more memory every single time we append an element to the array.
 Inside the loop, we continue to append until we have 3 elements and we want to append the 4th, and because we already reached our capacity of 3, we need to request more memory, and capacity is increased to 7, and so on.
@@ -71,7 +72,7 @@ If we know exactly how much memory we need, a good strategy is to preallocate it
 int[] ints = new int[](100);
 ```
 
-For objects in D, there is also ```.reserve```, which will, again, allocate only once:
+For objects in D, there is also `.reserve`, which will, again, allocate only once:
 
 ```d
 int[] ints;
@@ -90,8 +91,8 @@ Starting from the code snippet below, define 3 methods, in which you do the same
 - initialization with new
 - reserve after declaration
 
-The ```benchmark``` method takes a variable number of arguments (other methods) and calls each one a specified number of times, returning the total duration in an array.
+The `benchmark` method takes a variable number of arguments (other methods) and calls each one a specified number of times, returning the total duration in an array.
 
-Use the code from the ```benchmark.d``` file, from the practice folder for this session. 
+Use the code from the `benchmark.d` file, from the practice folder for this session. 
 
 Vary the number of iterations and items and interpret the results.

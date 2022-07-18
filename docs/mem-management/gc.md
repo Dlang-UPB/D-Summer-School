@@ -19,32 +19,33 @@ This algorithm is called garbage collection and an execution of the algorithm is
 
 We have already seen the GC in action in the last section, as it is responsible for allocating, extending or reclaiming memory, only we did not use it explicitly.
 
-Explicit allocation with the GC can be done with ```GC.malloc```, ```GC.calloc```, ```GC.realloc```:
+Explicit allocation with the GC can be done with `GC.malloc`, `GC.calloc`, `GC.realloc`:
 
 ```d
 // Allocate room for 25 ints
-int * intBuffer = cast(int*)GC.calloc(int.sizeof * 25);
+int* intBuffer = cast(int*) GC.calloc(int.sizeof * 25);
 ```
 
-An key thing here is that ```GC.malloc```, ```GC.calloc```, ```GC.realloc``` are different from the ```malloc```, ```calloc```, ```realloc``` that we have seen in the manual management section.
+A key thing here is that `GC.malloc`, `GC.calloc`, `GC.realloc` are different from the `malloc`, `calloc`, `realloc` that we have seen in the manual management section.
 The GC methods will allocate memory managed by the GC.
-```GC.free``` can be called to free the memory at any time, but it can also be left unfree'd, and the GC will reclaim it in a later collection cycle.
+`GC.free` can be called to free the memory at any time, but it can also be left unfree'd, and the GC will reclaim it in a later collection cycle.
 
 For classes, there is an important note to discuss: the size of a class variable is not the same as the size of a class object.
-```.sizeof``` is the size of a class variable and is always the same value: 8 on 64-bit systems and 4 on 32-bit systems.
-The size of a class object must be obtained by ```__traits(classInstanceSize)```, like this:
+`.sizeof` is the size of a class variable and is always the same value: 8 on 64-bit systems and 4 on 32-bit systems.
+That is because a class variable is a reference, a pointer to where the class instance resides in memory.
+The size of a class object must be obtained by `__traits(classInstanceSize)`, like this:
 
 ```d
 // Allocate room for 10 MyClass objects
-MyClass * buffer = cast(MyClass*)GC.calloc(__traits(classInstanceSize, MyClass) * 10);
+MyClass * buffer = cast(MyClass*) GC.calloc(__traits(classInstanceSize, MyClass) * 10);
 ```
 
 To reclaim memory, the GC keeps track of which blocks of memory are still accessible and which are not.
-The GC starts from locations known as program roots (implicitly, those are: the stacks of every thread, all global and thread-local variables; you can add locations for the GC to scan for references to memory blocks with ```GC.addRoot``` or ```GC.addRange```) and looks for pointers to memory blocks.
+The GC starts from locations known as program roots (implicitly, those are: the stacks of every thread, all global and thread-local variables; you can add locations for the GC to scan for references to memory blocks with `GC.addRoot` or `GC.addRange`) and looks for pointers to memory blocks.
 The GC will tag reachable blocks as still in use and unreachable blocks will be reclaimed.
 Because the GC allocated them in the first place, they are still accessible to the GC, so the GC can call their respective destructors.
 
-To understand how ```GC.addRoot``` works, keep in mind that a root is a pointer to a GC memory block, which, if added with ```GC.addRoot```, will not be reclaimed by the GC until we call ```GC.removeRoot``` and a collection cycle goes by.
+To understand how `GC.addRoot` works, keep in mind that a root is a pointer to a GC memory block, which, if added with `GC.addRoot`, will not be reclaimed by the GC until we call `GC.removeRoot` and a collection cycle goes by.
 If a block referenced by a root contains pointers to other GC-managed blocks, those blocks will not be collected until the root is removed or the memory is otherwise discarded.
 
 ```d
@@ -81,9 +82,9 @@ extern(C) void myHandler(void* ctx)
 }
 ```
 
-```GC.addRange``` is similar, but it receives a range of memory allocated outside the GC-managed memory (could be allocated with ```malloc``` from the C standard library, for example) and is scanned by the GC for pointers to GC-managed blocks.
+`GC.addRange` is similar, but it receives a range of memory allocated outside the GC-managed memory (could be allocated with `malloc` from the C standard library, for example) and is scanned by the GC for pointers to GC-managed blocks.
 As Michael Parker put it in his [The GC Series](https://dlang.org/blog/the-gc-series/), in order for the GC to properly do its job, it needs to be informed of any non-GC memory that contains, or may potentially contain, references to memory from the GC heap.
-An example for this could be a linked list whose nodes are allocated with ```malloc```, which might contain references to classes allocated with ```new```.
+An example for this could be a linked list whose nodes are allocated with `malloc`, which might contain references to classes allocated with `new`.
 
 ```d
 // Allocate a piece of memory on the C heap.
@@ -100,7 +101,7 @@ GC.addRange(rawMemory, size);
 GC algorithms may opt to move objects around in memory, to better use the available space, but this is costly, because every reference to those objects must also be moved to point to the new location.
 D's GC does not do this.
 
-For more fine-tuned control over the GC, the ```core.memory``` module provides a few other useful methods.
+For more fine-tuned control over the GC, the `core.memory` module provides a few other useful methods.
 We can disable the GC in critical sections of the program, where reclaiming memory might have a negative impact on the functionality:
 
 ```d
@@ -119,9 +120,9 @@ GC.collect(); // starts a garbage collection cycle
 
 # @nogc
 
-Previously discussed, the ```@nogc``` attribute will prevent any GC activity inside a method.
-This requires that any futher calls from a ```@nogc``` function be made to ```@nogc``` functions and prevents heap allocations for arrays, exceptions and so on.
-Below is a comprehensive list of restrictions for ```@nogc``` functions:
+Previously discussed, the `@nogc` attribute will prevent any GC activity inside a method.
+This requires that any futher calls from a `@nogc` function be made to `@nogc` functions and prevents heap allocations for arrays, exceptions and so on.
+Below is a comprehensive list of restrictions for `@nogc` functions:
 
 1. constructing an array on the heap
 2. resizing an array by writing to its .length property
@@ -152,8 +153,8 @@ void bar() { }
 
 # Profiling and configuring the GC
 
-When running a D binary (not when compiling!), we can specify GC-specific options on the command line with ```--DRT-gcopt=key1:value1 key2:value2 ..```.
-For example, to enable GC profiling, we would run a binary named ```app``` like so: ```app "--DRT-gcopt=profile:1" arguments to app```.
+When running a D binary (not when compiling!), we can specify GC-specific options on the command line with `--DRT-gcopt=key1:value1 key2:value2 ..`.
+For example, to enable GC profiling, we would run a binary named `app` like so: `app "--DRT-gcopt=profile:1" arguments to app`.
 The output may look like this:
 
 ```
@@ -170,7 +171,7 @@ This way, we can specify different configuration options for the GC, like initia
 
 ## Practice
 
-1. Use the code from the last Practice, but this time split it in 3 separate files, putting the code of each method in ```main()```, wrapped in a for-loop, like this:
+1. Use the code from the last Practice, but this time split it in 3 separate files, putting the code of each method in `main()`, wrapped in a for-loop, like this:
 
 ```d
 // file array_declare.d
@@ -187,12 +188,12 @@ void main()
 ```
 
 Do the same for the other 2 methods.
-Compile each binary, then run them like this: ```time ./array_declare --DRT-gcopt=profile:1```.
+Compile each binary, then run them like this: `time ./array_declare --DRT-gcopt=profile:1`.
 Compare the results, looking at the number of collections and total GC time.
-Pass different options to the GC; play with ```initReserve```, ```minPoolSize```, ```incPoolSize```, ```parallel```.
+Pass different options to the GC; play with `initReserve`, `minPoolSize`, `incPoolSize`, `parallel`.
 
-2. The GC has 2 public structs available in the ```core.memory``` module, from which we can analyse the general state and performance of the GC while the program is running.
-Look up the fields of the [```GC.Stats```](https://dlang.org/library/core/memory/gc.stats.html) and [```GC.ProfileStats```](https://dlang.org/library/core/memory/gc.profile_stats.html) structs.
+2. The GC has 2 public structs available in the `core.memory` module, from which we can analyse the general state and performance of the GC while the program is running.
+Look up the fields of the [`GC.Stats`](https://dlang.org/library/core/memory/gc.stats.html) and [`GC.ProfileStats`](https://dlang.org/library/core/memory/gc.profile_stats.html) structs.
 Create a program which uses a combination of a few different data types and produces a large number of allocations and collections.
-Monitor the state of the program by printing fields like ```usedSize```, ```numCollections``` and ```totalCollectionTime``` (you can use a different thread for this, or print from the main thread at key points in the execution).
+Monitor the state of the program by printing fields like `usedSize`, `numCollections` and `totalCollectionTime` (you can use a different thread for this, or print from the main thread at key points in the execution).
 Start from the example in the practice folder for this session.

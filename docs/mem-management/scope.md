@@ -11,8 +11,8 @@ The scope of an entity can be defined as the location(s) in the program where it
 Scoping restricts access to an entity, reducing the possibility of changing the entity's state (or value, for simple types) in an unintended way (maybe from a different part of the program).
 This also means that we can reuse names to refer to different entities, as long as we use them in separate scopes.
 
-In the D programming language, a new scope is defined within ```{}``` (curly braces).
-In the example below, the variables ```a``` and ```b``` are defined in two different scopes:
+In the D programming language, a new scope is defined within `{}` (curly braces).
+In the example below, the variables `a` and `b` are defined in two different scopes:
 
 ```d
 void foo() {

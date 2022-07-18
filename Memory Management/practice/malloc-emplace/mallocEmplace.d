@@ -13,7 +13,7 @@ void main()
     import std.stdio;
     import core.lifetime : emplace;
 
-    Point* thirdPoint = cast(Point*)malloc(Point.sizeof);
+    Point* thirdPoint = cast(Point*) malloc(Point.sizeof);
     thirdPoint = emplace!Point(thirdPoint, 2, 1);
     writeln(*thirdPoint); // prints Point(2, 1)
 }
