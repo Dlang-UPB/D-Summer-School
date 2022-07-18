@@ -1,0 +1,2 @@
+BINARY = array_declare
+include ../../Makefile

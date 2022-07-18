@@ -1,0 +1,2 @@
+BINARY = mallocEmplace
+include ../../Makefile

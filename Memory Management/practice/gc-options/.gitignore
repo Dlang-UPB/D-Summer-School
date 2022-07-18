@@ -1,0 +1,6 @@
+array_declare
+array_declare.o
+array_new
+array_new.o
+array_reserve
+array_reserve.o

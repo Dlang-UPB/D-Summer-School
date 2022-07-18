@@ -1,0 +1,2 @@
+BINARY = benchmark
+include ../../Makefile
