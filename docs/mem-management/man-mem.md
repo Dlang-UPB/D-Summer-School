@@ -78,26 +78,6 @@ Additional arguments can be provided, matching one of the constructors for the o
 For each, define a no-arg constructor and a constructor with at least one argument.
 Use this as a starting point:
 
-```d
-struct Point {
-    int x, y;
-
-    this(int n, int m) {
-        x = n;
-        y = m;
-    }
-}
-
-void main()
-{
-    import core.stdc.stdlib;
-    import std.stdio;
-    import core.lifetime : emplace;
-
-    Point* thirdPoint = cast(Point*)malloc(Point.sizeof);
-    thirdPoint = emplace!Point(thirdPoint, 2, 1);
-    writeln(*thirdPoint); // prints Point(2, 1)
-}
-```
+Use the code from ```mallocEmplace.d```, in the practice folder.
 
 2. Define destructors and use ```destroy``` to call the destructors, then free the memory.

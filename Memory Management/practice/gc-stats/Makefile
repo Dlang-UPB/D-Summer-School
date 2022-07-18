@@ -1,0 +1,2 @@
+BINARY = gcStats
+include ../../Makefile

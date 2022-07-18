@@ -195,3 +195,4 @@ Pass different options to the GC; play with ```initReserve```, ```minPoolSize```
 Look up the fields of the [```GC.Stats```](https://dlang.org/library/core/memory/gc.stats.html) and [```GC.ProfileStats```](https://dlang.org/library/core/memory/gc.profile_stats.html) structs.
 Create a program which uses a combination of a few different data types and produces a large number of allocations and collections.
 Monitor the state of the program by printing fields like ```usedSize```, ```numCollections``` and ```totalCollectionTime``` (you can use a different thread for this, or print from the main thread at key points in the execution).
+Start from the example in the practice folder for this session.

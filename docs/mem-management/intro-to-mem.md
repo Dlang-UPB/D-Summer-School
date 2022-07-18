@@ -17,6 +17,5 @@ The entities that live in our programs (basic types, arrays or aggregate types l
 - name (used to identify the variable)
 - address (location in program memory)
 - type (depending on the language, it can be inferred or must be declared explicitly)
-You should already be familiar with those.
 
 When talking about memory management, two (less talked about) properties are of interest: scope and lifetime.

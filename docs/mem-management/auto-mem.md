@@ -8,7 +8,7 @@ nav_order: 4
 
 The [D language specification](https://dlang.org/spec/garbage.html) offers a good insight into how the D's GC works, here we will present only the most important aspects of it.
 D makes extensive use of GC, even if it might not be obvious at a first glance.
-To make efficient use of it, we must understand when and how the GC does it's job.
+To make efficient use of it, we must understand when and how the GC does its job.
 Exceptions, strings, dynamic and associative arrays are some of the built-in types that make use of GC-allocated memory.
 Let's look at an example, using the append operator:
 
@@ -79,7 +79,8 @@ ints.reserve(100);
 ```
 
 Always keep in mind these good practices:
-- loops, especially if they run many times, should be responsible only for arithmetic, as this is the quickest and most predictable type of computation; we should avoid as much as possible having conditionals inside loops (all modern CPUs implement branch prediction strategies, which can generate a lot of mispredictions inside loops), and even more so, memory allocations, in which your program requests memory from the operating system, which in turn allocates physical memory 
+- loops, especially if they run many times, should be responsible only for arithmetic operations, as this is the quickest and most predictable type of computation.
+We should avoid as much as possible having conditionals inside loops (all modern CPUs implement branch prediction strategies, which can generate a lot of mispredictions inside loops), and even more so, memory allocations, in which your program requests memory from the operating system, which in turn allocates physical memory.
 - preallocating memory gives multiple advantages: 1) you can allocate when you know the performance will have a minimal negative impact and 2) you can allocate fewer times, because you can plan how you are going to use the memory before you use it, something that no automated memory management system can do out of the box
 
 ## Practice
@@ -91,29 +92,6 @@ Starting from the code snippet below, define 3 methods, in which you do the same
 
 The ```benchmark``` method takes a variable number of arguments (other methods) and calls each one a specified number of times, returning the total duration in an array.
 
-```d
-const int num_iterations = 2_000_000; // this will be the number of function calls
-const int num_items = 100; // this will be the number of elements to append to the array
-
-void array_declare() {
-}
-
-void array_new() {
-}
-
-void array_reserve() {
-}
-
-void main()
-{
-    import std.stdio : writeln, write;
-    import std.datetime.stopwatch : benchmark;
-
-    auto res = benchmark!(array_declare, array_new, array_reserve)(num_iterations);
-    write("array_declare took "); writeln(res[0]);
-    write("array_new took "); writeln(res[1]);
-    write("array_reserve took "); writeln(res[2]);
-}
-```
+Use the code from the ```benchmark.d``` file, from the practice folder for this session. 
 
 Vary the number of iterations and items and interpret the results.
