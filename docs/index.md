@@ -8,7 +8,7 @@ nav_order: 1
 > "D is a multi-paradigm system programming language that combines a wide range of powerful programming concepts from the lowest to the highest levels.
 > It emphasizes memory safety, program correctness, and pragmatism." - Ali Çehreli, Programming in D, 2018
 
-Welcome to the **D Summer School (DSS)**!
+Welcome Welcome to the **D Summer School (DSS)**!
 This repository contains information available to the participants to the D Summer School: session text, tutorials, quizzes, exercises.
 Apart from DSS participants, you can use this content by yourself to learn more about [the D programming language](https://dlang.org/).
 

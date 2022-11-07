@@ -17,6 +17,9 @@ jobs:
       - name: Print GH obj
         run: echo -e "github is:\n ${{ toJSON(github) }}"
 
+      - name: Dummy
+        run: echo "aaa"
+
       #- name: Commit documentation changes
         #run: |
           #git clone https://github.com/edi33416/DSS-gh-pages.git github-pages
