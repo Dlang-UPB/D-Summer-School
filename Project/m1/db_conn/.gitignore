@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/db_conn
+db_conn.so
+db_conn.dylib
+db_conn.dll
+db_conn.a
+db_conn.lib
+db_conn-test-*
+*.exe
+*.o
+*.obj
+*.lst

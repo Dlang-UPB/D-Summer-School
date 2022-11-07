@@ -23,6 +23,10 @@ Apart from the course participants, you can use this content by yourself to lear
 1. [Advanced Structs and Classes](./structs-classes/asc.md)
 1. [Advanced Meta-Programming](./advanced-meta/advanced-meta.md)
 
+## Project
+
+You can find the project description [here](./assignment/description.md)
+
 ## Contributing
 
 Contributions are welcome.
