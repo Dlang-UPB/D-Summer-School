@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-  pull_request:
+  pull_request_target:
 
 jobs:
   build_job:
@@ -13,43 +13,47 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Commit documentation changes
-        run: |
-          git clone https://github.com/edi33416/DSS-gh-pages.git github-pages
-          if test ${{ github.ref }} == 'refs/heads/master'; then
-            cp -r docs/* github-pages/docs
-            rm github-pages/docs/_config.yml
-            rm -rf github-pages/docs/_includes
-            # Set the right baseurl for Jekyll
-            #echo "baseurl: \"/docs\"" >> docs/_config.yml
-            #echo "url: \"https://edi33416.github.io/DSS-gh-pages\"" >> docs/_config.yml
-          else
-            mkdir -p github-pages/${{ github.ref }}
-            cp -r docs/* github-pages/${{ github.ref }}
-            rm github-pages/${{ github.ref }}/_config.yml
-            rm -rf github-pages/${{ github.ref }}/_includes
-            # Set the right baseurl for Jekyll
-            #echo "baseurl: \"/${{ github.ref }}\"" >> docs/_config.yml
-            #echo "url: \"https://edi33416.github.io/DSS-gh-pages\"" >> docs/_config.yml
-          fi
-          cp docs/_config.yml github-pages/
-          cp -r docs/_includes github-pages/
-          cd github-pages/
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m 'Update "${{ github.ref }}"' -a || true
-          git push https://${{ secrets.GH_PG_ACCESS_TOKEN }}@github.com/edi33416/DSS-gh-pages.git
 
-      - name: Add comment to PR
-        if: github.event_name == 'pull_request'
-        env:
-          URL: ${{ github.event.pull_request.comments_url }}
-          GITHUB_TOKEN: edi33416:${{ secrets.GH_PG_ACCESS_TOKEN }}
-        run: |
-          curl \
-            -X POST \
-            -u $GITHUB_TOKEN \
-            $URL \
-            -H "Content-Type: application/json" \
-            --data '{ "body": "Published at https://edi33416.github.io/DSS-gh-pages/${{ github.ref }}" }'
+      - name: Print GH obj
+        run: echo -e "github is:\n ${{ toJSON(github) }}"
+
+      #- name: Commit documentation changes
+        #run: |
+          #git clone https://github.com/edi33416/DSS-gh-pages.git github-pages
+          #if test ${{ github.ref }} == 'refs/heads/master'; then
+            #cp -r docs/* github-pages/docs
+            #rm github-pages/docs/_config.yml
+            #rm -rf github-pages/docs/_includes
+            ## Set the right baseurl for Jekyll
+            ##echo "baseurl: \"/docs\"" >> docs/_config.yml
+            ##echo "url: \"https://edi33416.github.io/DSS-gh-pages\"" >> docs/_config.yml
+          #else
+            #mkdir -p github-pages/${{ github.ref }}
+            #cp -r docs/* github-pages/${{ github.ref }}
+            #rm github-pages/${{ github.ref }}/_config.yml
+            #rm -rf github-pages/${{ github.ref }}/_includes
+            ## Set the right baseurl for Jekyll
+            ##echo "baseurl: \"/${{ github.ref }}\"" >> docs/_config.yml
+            ##echo "url: \"https://edi33416.github.io/DSS-gh-pages\"" >> docs/_config.yml
+          #fi
+          #cp docs/_config.yml github-pages/
+          #cp -r docs/_includes github-pages/
+          #cd github-pages/
+          #git config --local user.email "action@github.com"
+          #git config --local user.name "GitHub Action"
+          #git add .
+          #git commit -m 'Update "${{ github.ref }}"' -a || true
+          #git push https://${{ secrets.GH_PG_ACCESS_TOKEN }}@github.com/edi33416/DSS-gh-pages.git
+
+      #- name: Add comment to PR
+        #if: github.event_name == 'pull_request'
+        #env:
+          #URL: ${{ github.event.pull_request.comments_url }}
+          #GITHUB_TOKEN: edi33416:${{ secrets.GH_PG_ACCESS_TOKEN }}
+        #run: |
+          #curl \
+            #-X POST \
+            #-u $GITHUB_TOKEN \
+            #$URL \
+            #-H "Content-Type: application/json" \
+            #--data '{ "body": "Published at https://edi33416.github.io/DSS-gh-pages/${{ github.ref }}" }'
