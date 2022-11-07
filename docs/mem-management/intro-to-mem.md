@@ -1,5 +1,5 @@
 ---
-nav_order: 7
+nav_order: 3
 title: Memory Management
 has_children: true
 ---

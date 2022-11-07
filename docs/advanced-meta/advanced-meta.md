@@ -1,5 +1,5 @@
 ---
-nav_order: 6
+nav_order: 8
 title: Advanced Meta-Programming
 has_children: true
 ---

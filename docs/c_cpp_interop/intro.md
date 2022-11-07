@@ -1,5 +1,5 @@
 ---
-nav_order: 8
+nav_order: 6
 title: C\C++ Interoperability
 has_children: true
 ---

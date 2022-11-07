@@ -1,5 +1,5 @@
 ---
-nav_order: 4
+nav_order: 7
 title: Advanced Classes and Structs
 ---
 # Advanced Classes and Structs
