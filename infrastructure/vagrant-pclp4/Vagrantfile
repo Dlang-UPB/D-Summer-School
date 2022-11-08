@@ -1,0 +1,16 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2204"
+
+  config.vm.provider "virtualbox" do |v|
+    v.name = "pclp4"
+    v.memory = 4096
+  end
+
+  # Do the rest of the provisioning using ansible
+  config.vm.provision :ansible, playbook: "../playbooks-pclp4/master-lite.yml"
+
+  config.vm.provision :reload
+end
