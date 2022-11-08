@@ -1,0 +1,13 @@
+{
+	"authors": [
+		"Eduard Staniloiu"
+	],
+	"copyright": "Copyright © 2022, Eduard Staniloiu",
+	"dependencies": {
+		"dauth": "~>0.6.4",
+		"vibe-d:mongodb": "~>0.9.5"
+	},
+	"description": "Virus total application with MongoDB",
+	"license": "proprietary",
+	"name": "db_conn"
+}
