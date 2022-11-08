@@ -1,0 +1,31 @@
+---
+- hosts: all
+
+  vars:
+    username: "student"
+    hostname: "pclp4"
+
+  tasks:
+  - name: Set the timezone to 'Bucharest'
+    file:
+      src: /usr/share/zoneinfo/Europe/Bucharest
+      dest: /etc/localtime
+      state: link
+    become: yes
+
+  - name: Install Docker
+    import_tasks: docker-install.yml
+
+  - name: Add vagrant user to docker group
+    user:
+      name: vagrant
+      groups: docker
+      append: yes
+    become: yes
+
+  - name: Install Dlang
+    import_tasks: dlang.yml
+
+  #- name: Reboot the machine
+    #reboot:
+
