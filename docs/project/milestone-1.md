@@ -148,4 +148,13 @@ users.update(["_id" : "unique_id"],                                             
 
 ### Tasks
 
-You will have to implement the functions marked with `TODO` in `Project/m1/db_conn/app.d`.
+You will have to implement the functions marked with `TODO` in `Project/m1/db_conn/app.d`:
+
+* `addUser - receives a users credentials and adds them to the user database
+* `authUser` - receives a user name and password and returns whether the login is successful or not
+* `deleteUser` - receives an email and deletes the user from the user database and updates the files and URLs databases so that the userId is "Deleted_User"
+* `addFile` - adds a file to the files database - you must generate a unique identifier
+* `getFiles` - receives a userId (an email) and returns all the file entries that belong to the user
+* `getFile` - given a file hash, the function will return the first file that it finds in the files database that matches the given hash
+* `deleteFile` - given a file hash, removes all of the entries in the files database that match the hash file
+* Similarly, for the URL functions.
