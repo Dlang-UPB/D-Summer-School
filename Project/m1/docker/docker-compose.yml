@@ -1,6 +1,22 @@
-version: '3.1'
+version: '3.2'
 
 services:
+  checker:
+    image: milestone-1-checker:latest
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - type: bind
+        source: ../db_conn
+        target: /checker
+    environment:
+      - WAIT_HOSTS=mongo:27017
+      - DMD=dmd-2.100.2
+    depends_on:
+      - mongo
+    command: /usr/bin/bash -c '/wait && source ~/dlang/dmd-2.100.2/activate && dub run'
+
   mongo:
     image: mongo:5.0.13
     restart: always
