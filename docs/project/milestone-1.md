@@ -50,7 +50,7 @@ sudo apt-get install -y docker-compose
 After you have installed a working version of docker on your system, you will need to run the provided makefile to set up the database.
 
 ```bash
-cd docker && make start
+cd docker && docker-compose up -d mongo
 ```
 
 The assignment skeleton contains 2 directories:
@@ -60,11 +60,11 @@ The assignment skeleton contains 2 directories:
 
 You will implement this milestone in the `db-conn/source/app.d` file.
 
-### Working with mongo-db from D
 
 To be able to access `mongo` from D we use the `mongodb` library from the `vibe-d` framework.
 
-There is no need to install anything to use the `vibe-d` framework  as thisis taken care of by the D package manager: `dub`.
+You need to install `libevent-dev libssl-dev` as the `vibe-d` framework depends on them.
+There is no need to install anything else after this, as the rest of the packages are taken care of by the D package manager: `dub`.
 
 To compile and run the application we need to navigate to the `db-conn/` directory and run:
 
@@ -74,6 +74,20 @@ dub run
 
 Do not mind the deprecation messages issued by `dub` when running the command above with the skeleton.
 They come from the `vibe-d` library and there's nothing you can do about them.
+
+#### Simplified checker
+
+You can use docker to get all your development environment setup.
+Navigate in the `docker` directory and run `make start`:
+
+```bash
+cd docker && make start
+```
+
+This will start a mongo container and a container that will build your project and run the checker against the mongo container.
+
+
+### Working with mongo-db from D
 
 To be able to interact with the database, we need to create a `MongoClient ` object that will represent the connection to the database:
 
