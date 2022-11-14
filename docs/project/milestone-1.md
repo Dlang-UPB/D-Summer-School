@@ -164,7 +164,7 @@ users.update(["_id" : "unique_id"],                                             
 
 You will have to implement the functions marked with `TODO` in `Project/m1/db_conn/app.d`:
 
-* `addUser - receives a users credentials and adds them to the user database
+* `addUser` - receives a users credentials and adds them to the user database
 * `authUser` - receives a user name and password and returns whether the login is successful or not
 * `deleteUser` - receives an email and deletes the user from the user database and updates the files and URLs databases so that the userId is "Deleted_User"
 * `addFile` - adds a file to the files database - you must generate a unique identifier
