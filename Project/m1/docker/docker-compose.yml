@@ -12,10 +12,10 @@ services:
         target: /checker
     environment:
       - WAIT_HOSTS=mongo:27017
-      - DMD=dmd-2.100.2
+      - LDC=ldc-1.30.0
     depends_on:
       - mongo
-    command: /usr/bin/bash -c '/wait && source ~/dlang/dmd-2.100.2/activate && dub run'
+    command: /usr/bin/bash -c '/wait && source ~/dlang/ldc-1.30.0/activate && dub run'
 
   mongo:
     image: mongo:5.0.13

@@ -47,6 +47,14 @@ curl -fsSL test.docker.com -o get-docker.sh && sh get-docker.sh
 sudo apt-get install -y docker-compose
 ```
 
+You can add your user to the `docker` group in order to avoid having to use `sudo` when running docker commands:
+```bash
+sudo usermod -aG docker $USER
+```
+You need to log out and log back in so that your group membership is re-evaluated.
+If you’re running Linux in a virtual machine, it may be necessary to restart the virtual machine for changes to take effect.
+More details about this on the official [page](https://docs.docker.com/engine/install/linux-postinstall/).
+
 After you have installed a working version of docker on your system, you will need to run the provided makefile to set up the database.
 
 ```bash
@@ -86,6 +94,10 @@ cd docker && make start
 
 This will start a mongo container and a container that will build your project and run the checker against the mongo container.
 
+You can use the makefile from the `db_conn` directory to achieve the same thing:
+```bash
+cd db_conn && make start
+```
 
 ### Working with mongo-db from D
 
