@@ -1,0 +1,55 @@
+version: '3.2'
+
+services:
+  checker:
+    image: milestone-2-checker:latest
+    build:
+      context: ../
+      dockerfile: ./m1/docker/Dockerfile
+    volumes:
+      - type: bind
+        source: ./rest_tester
+        target: /checker
+    environment:
+      - WAIT_HOSTS=rest_api:8080
+      - WAIT_TIMEOUT=600
+    depends_on:
+      - rest_api
+      - mongo
+    command: /usr/bin/bash -c 'source ~/dlang/ldc-1.30.0/activate && dub build && /wait && dub run; dub clean'
+
+  mongo:
+    image: mongo:5.0.13
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: testing
+    ports:
+      - 27017:27017
+    # We can use init scripts if the need arises
+    #volumes:
+      #- ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  rest_api:
+    image: rest_api:latest
+    build:
+      context: ./
+      dockerfile: ./rest_api/Dockerfile
+    volumes:
+      - type: bind
+        source: ./rest_api
+        target: /rest_api
+    environment:
+      - WAIT_HOSTS=mongo:27017
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo
+    command: /usr/bin/bash -c '/wait && source ~/dlang/ldc-1.30.0/activate && dub run'
+
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1450

@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/rest_api
+rest_api.so
+rest_api.dylib
+rest_api.dll
+rest_api.a
+rest_api.lib
+rest_api-test-*
+*.exe
+*.o
+*.obj
+*.lst

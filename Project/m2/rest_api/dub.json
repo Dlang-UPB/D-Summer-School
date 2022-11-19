@@ -1,0 +1,14 @@
+{
+    "authors": [
+        "Eduard Staniloiu"
+    ],
+    "copyright": "Copyright © 2022, Eduard Staniloiu",
+    "dependencies": {
+        "dauth": "~>0.6.4",
+        "requests": "~>2.0.9",
+        "vibe-d": "~>0.9"
+    },
+    "description": "A simple REST API for the virust total db conn",
+    "license": "proprietary",
+    "name": "rest_api"
+}
