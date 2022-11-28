@@ -57,7 +57,8 @@ This response contains 2 parts:
 #### Hashing passwords
 
 Passwords cannot be stored in plain text for [obvious reasons](https://www.passcamp.com/blog/dangers-of-storing-and-sharing-passwords-in-plaintext/).
-As a consequence, our service needs to hash passwords before saving them in the database. To better understand how the salting process works, [read this article](https://www.okta.com/blog/2019/03/what-are-salted-passwords-and-password-hashing/).
+As a consequence, our service needs to hash passwords before saving them in the database.
+To better understand how the salting process works, [read this article](https://www.okta.com/blog/2019/03/what-are-salted-passwords-and-password-hashing/).
 
 #### Access tokens
 
@@ -73,15 +74,25 @@ The generation and storing of the access token is already implemented in our ref
 
 ### TODOs
 
-You will need to implement the following functions:
+You will need to implement the following functions.
+Each of them will forward the request to the backend and, depending on the response, creates the JSON object and the response code.
+If the request is successful, the web API function should return a JSON object, as described below.
+Unless otherwise stated, for a successful query you need to return a [JSON](https://vibed.org/api/vibe.data.json/) object that contains an informative text of your choosing.
+To pack any kind of data into a JSON object, simply use the [serializeToJson](https://vibed.org/api/vibe.data.json/serializeToJson) function.
+For situations where the query has failed you must throw an [HTTPStatusException](https://vibed.org/api-0.7.31/vibe.http.common/HTTPStatusException.this).
+For any of the methods, you can throw an `HTTPStatus.internalServerError` `HTTPStatusException` in any scenario not described below.
+
+All methods that you'll have to implement can be grouped into 2 categories: those that require authentication and those that don't.
+In the [VirusTotalAPIRoot interface](https://github.com/Dlang-UPB/PCLP4-internal/blob/main/m2/rest_api/source/virus_total.d#L19), you'll see that the former methods have an `@anyAuth` tag (also called a [user-defined attribute (UDA)](https://dlang.org/spec/attribute.html#UserDefinedAttribute)), while the latter have a `@noAuth` UDA.
+The `@noAuth` methods can be queried without being logged in.
+The `@anyAuth` ones, however, require a valid user to be logged in before the method can be executed.
+**If the user is not logged in, each `@anyAuth` will return `HTTPStatus.unauthorized` by default.**
+The login mechanism was described in the ["Access tokens"](#access-tokens) section.
+The checker already takes care of this by adding the required access token whenever it's needed. 
 
 #### addUser
 
-Forwards the request to the backend and, depending on the response, creates the JSON object and the reponse code.
-For a successful query you need to return a [JSON](https://vibed.org/api/vibe.data.json/) object that contains an informative text of your choosing.
-To pack any kind of data into a JSON object, simply use the [serializeToJson](https://vibed.org/api/vibe.data.json/serializeToJson) function.
-For situations where the query has failed you must throw an [HTTPStatusException](https://vibed.org/api-0.7.31/vibe.http.common/HTTPStatusException.this).
-The situations where an `addUser` query may fail are:
+Situations where `addUser` may fail:
 
 - invalid email: `HTTPStatus.badRequest` is returned
 - null password: `HTTPStatus.badRequest` is returned
@@ -98,4 +109,66 @@ Situations where `authUser` may fail:
 
 - invalid email: `HTTPStatus.badRequest` is returned
 - null password: `HTTPStatus.badRequest` is returned
-- 
+- wrong user/password: `HTTPStatus.unauthorized` is returned
+
+#### deleteUser
+
+`deleteUser` may fail when an invalid email is given.
+In this case, `HTTPStatus.badRequest` is returned
+
+#### addUrl
+
+Situations to consider:
+
+- URL exists: `HTTPStatus.ok` is returned.
+Adding an existing URL is not considered an error
+- empty url: `HTTPStatus.badRequest` is returned
+
+#### deleteUrl
+
+If the URL address is empty, you should return an `HTTPStatus.badRequest` message.
+
+#### getUrlInfo
+
+If the URL returned by the DB client is `null`, you should return an `HTTPStatus.notFound` message.
+Otherwise, you should serialise this returned URL to a JSON object.
+
+#### getUserUrls
+
+This method cannot fail.
+In case no URL exist for the currently logged user, a JSON object comprised of an empty list is returned.
+
+#### addFile
+
+Situations to consider:
+
+- the file is empty: `HTTPStatus.badRequest` is returned
+- the file exists: `HTTPStatus.ok` is returned.
+Similarly to URLs, adding an existing file is not considered an error
+
+#### getFileInfo
+
+If the file returned by the Mongo client is `null`, you should return an `HTTPStatus.notFound` response.
+Otherwise, you should serialise this returned file to a JSON object.
+
+#### getUserFiles
+
+This method cannot file, similarly to `getUserUrls`.
+In the same fashion, you should return a JSON-serialised empty list in case the user has no files.
+
+#### deleteFile
+
+If the digest of the file is an empty string, `HTTPStatus.badRequest` is returned.
+
+#### Password hashing
+
+The [db_conn.d](https://github.com/Dlang-UPB/PCLP4/blob/master/Project/m2/rest_api/source/db_conn.d) file already contains the methods `addUser` and `authUser` methods.
+However, the implementations are unsafe since they don't hash the password before inserting it into the database.
+You need to add this logic using the functions exposed by the [dauth](https://code.dlang.org/packages/dauth) library.
+Specifically, you can use the following functions:
+
+- `toPassword`: converts a string to a `Password` object used by dauth, without encrypting it
+- `makeHash`: hashes and salts the password.
+Takes a `Password` object as input
+- `parseHash`: converts a hashed and salted password string to a `Password` object
+
