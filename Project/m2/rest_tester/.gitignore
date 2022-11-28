@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/rest_tester
+rest_tester.so
+rest_tester.dylib
+rest_tester.dll
+rest_tester.a
+rest_tester.lib
+rest_tester-test-*
+*.exe
+*.o
+*.obj
+*.lst
