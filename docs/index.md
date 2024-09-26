@@ -32,6 +32,7 @@ Prizes will be awarded!
 1. [Advanced Meta-Programming](./advanced-meta/advanced-meta.md)
 1. [Memory Management](./mem-management/intro-to-mem.md)
 1. [C/C++ Interoperability and Tooling](./c_cpp_interop/intro.md)
+1. [OmniOpenCon Workshop](./omni-open-con-ws/intro.md)
 
 ## Contributing
 
