@@ -1,7 +1,7 @@
 ---
+nav_order: 9
 title: OmniOpenCon Workshop
 parent: OmniOpenCon Workshop
-nav_order: 1
 ---
 
 <details markdown="block">
